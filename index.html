@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCOS/PCOD/PMOS Consultation — LifelineX</title>
+<meta name="description" content="A 1-on-1 consultation with an MBBS/MD doctor and a plan personalised to your PCOS, PCOD or PMOS history. Take the free 2-minute assessment.">
+<meta property="og:title" content="PCOS/PCOD/PMOS Consultation — LifelineX">
+<meta property="og:description" content="Doctor-led, personalised PCOS, PCOD &amp; PMOS care. Take the free 2-minute assessment.">
+<meta property="og:image" content="assets/hero-conversation.jpg">
+<meta name="theme-color" content="#082D4A">
+<link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap">
+<style>
+
+*{box-sizing:border-box}
+:root{
+  --ink:#082D4A;
+  --tint:#E3F6F7;
+  --bg:#F5FAFB;
+  --card:#FFFFFF;
+  --line:#DCEEF0;
+  --muted:#4A6478;
+  --muted2:#7C93A0;
+  --accent2:#00B9C4;
+}
+body{margin:0;font-family:'Work Sans',system-ui,sans-serif;background:var(--bg);color:#2A2028}
+a{color:var(--accent2)}
+a:hover{color:#067884}
+h1,h2,h3{font-family:'Sora',system-ui,sans-serif;margin:0}
+p{margin:0}
+details summary{cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+
+.cta-btn{transition:transform .18s ease, box-shadow .18s ease, filter .18s ease}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,185,196,0.38);filter:brightness(1.04)}
+.cta-outline:hover{background:var(--ink) !important;color:#FFFFFF !important}
+
+.hover-card{transition:transform .2s ease, box-shadow .2s ease}
+.hover-card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(8,45,74,0.16)}
+
+.step-card{transition:transform .2s ease, background .2s ease, border-color .2s ease}
+.step-card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.09) !important;border-color:rgba(255,255,255,0.28) !important}
+
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(16px,-20px) scale(1.05)}}
+.blob-a{animation:floatBlob 9s ease-in-out infinite}
+.blob-b{animation:floatBlob 11s ease-in-out infinite reverse}
+
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,185,196,0.45)}50%{box-shadow:0 0 0 16px rgba(0,185,196,0)}}
+.pulse-cta{animation:pulseGlow 2.4s ease-in-out infinite}
+
+.faq-item summary::after{content:"+";float:right;font-size:20px;color:var(--accent2);font-weight:700;transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+
+@media (max-width:680px){
+  .grid-3{grid-template-columns:1fr !important}
+  .steps-wrap{grid-template-columns:1fr 1fr !important;gap:20px 16px !important}
+  .diff-wrap{flex-direction:column !important}
+  .hero-col{min-width:0 !important;width:100% !important}
+  .resp-img{height:220px !important}
+  .topbar{padding:10px 16px !important}
+  .topbar-cta{font-size:12.5px !important;padding:9px 14px !important}
+  .trust-row{gap:14px !important;padding:14px 16px !important}
+  .trust-row>div{font-size:12px !important}
+  .sec{padding-top:48px !important;padding-bottom:48px !important}
+}
+@media (max-width:400px){
+  .topbar-brand{display:none !important}
+  .topbar-brand-icon{display:block !important}
+  .topbar-cta{font-size:11.5px !important;padding:9px 12px !important}
+}
+
+html{scroll-behavior:smooth}
+.multi-opt{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.multi-opt:hover,.q-step button[onclick^="selectAnswer"]:hover{border-color:var(--accent2) !important;background:var(--tint) !important}
+.q-step input:focus{outline:none;border-color:var(--accent2) !important}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}html{scroll-behavior:auto}}
+.multi-opt.selected{border-color:var(--accent2) !important;background:var(--tint) !important;color:var(--ink) !important;font-weight:700 !important}
+.multi-check{flex:none;width:18px;height:18px;border-radius:6px;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;background:#FFFFFF}
+.multi-check svg{display:none}
+.multi-check.selected{border-color:var(--accent2);background:var(--accent2)}
+.multi-check.selected svg{display:block}
+
+</style>
+</head>
+<body>
+<div style="width:100%;position:relative">
+
+<!-- ============ STICKY TOP BAR ============ -->
+<div class="topbar" style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(245,250,251,0.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+  <img class="topbar-brand" src="assets/logo-horizontal.svg" alt="LifelineX" style="height:26px;width:auto;display:block">
+  <img class="topbar-brand-icon" src="assets/logo-icon.svg" alt="LifelineX" style="height:28px;width:auto;display:none">
+  <a class="topbar-cta cta-btn" href="#assessment" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:100px;white-space:nowrap">Take the Free Assessment</a>
+</div>
+
+<div style="height:68px"></div>
+
+<!-- ============ HERO ============ -->
+<div style="position:relative;overflow:hidden">
+  <div class="blob-a" style="position:absolute;top:-60px;left:-80px;width:280px;height:280px;border-radius:50%;background:var(--accent2);opacity:0.14;filter:blur(30px);pointer-events:none"></div>
+  <div class="blob-b" style="position:absolute;bottom:-100px;right:-60px;width:340px;height:340px;border-radius:50%;background:var(--ink);opacity:0.08;filter:blur(36px);pointer-events:none"></div>
+
+  <div class="hero-flex" style="max-width:1180px;margin:0 auto;padding:56px 24px 40px;display:flex;flex-wrap:wrap-reverse;align-items:center;gap:48px;position:relative">
+    <div class="hero-col" style="flex:1 1 420px;min-width:300px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:inline-flex;align-self:flex-start;background:var(--tint);color:var(--ink);font-weight:700;font-size:13px;padding:7px 14px;border-radius:100px;border:1px solid var(--line)">PCOS/PCOD/PMOS Care, Personalised</div>
+      <h1 style="font-size:clamp(28px,7.5vw,46px);line-height:1.12;color:var(--ink);font-weight:600">A doctor-led, personal path to understanding your <span style="background:linear-gradient(135deg,#082D4A,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">PCOS, PCOD &amp; PMOS</span></h1>
+      <p style="font-size:17px;line-height:1.55;color:var(--muted);max-width:46ch">A 1-on-1 consultation with an MBBS/MD doctor, followed by a plan personalised to your history — not a generic chart everyone else got too.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px">
+        <a class="cta-btn pulse-cta" href="#assessment" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 28px;border-radius:100px">Take the Assessment</a>
+        <a class="cta-outline" href="#how-it-works" style="transition:background .18s ease,color .18s ease;background:transparent;color:var(--ink);text-decoration:none;font-weight:600;font-size:15.5px;padding:15px 22px;border-radius:100px;border:1.5px solid var(--ink)">See how it works</a>
+      </div>
+    </div>
+    <div class="hero-col" style="flex:1 1 380px;min-width:280px">
+      <img class="resp-img" src="assets/hero-conversation.jpg" alt="Two women walking together outdoors, in conversation" style="width:100%;height:380px;object-fit:cover;border-radius:24px;display:block;box-shadow:0 20px 44px rgba(8,45,74,0.18)">
+    </div>
+  </div>
+</div>
+
+<!-- ============ TRUST STRIP ============ -->
+<div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#FFFFFF">
+  <div class="trust-row" style="max-width:1180px;margin:0 auto;padding:20px 24px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center;align-items:center">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      MBBS / MD-led
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      Hundreds of assessments completed
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      1-on-1 — not a call center
+    </div>
+  </div>
+</div>
+
+<!-- ============ RELATABILITY ============ -->
+<div class="sec" style="max-width:900px;margin:0 auto;padding:80px 24px 48px;text-align:center;display:flex;flex-direction:column;gap:32px;align-items:center">
+  <h2 style="font-size:clamp(24px,6vw,34px);color:var(--ink);font-weight:600">You've probably heard this before…</h2>
+  <div class="grid-3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%">
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:left">
+      <p style="font-size:14.5px;line-height:1.5;color:#2A2028;font-style:italic">“Here's a diet chart — this works for everyone.”</p>
+    </div>
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:left">
+      <p style="font-size:14.5px;line-height:1.5;color:#2A2028;font-style:italic">“Just lose some weight, it'll sort itself out.”</p>
+    </div>
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:left">
+      <p style="font-size:14.5px;line-height:1.5;color:#2A2028;font-style:italic">“Come back in three months if it hasn't improved.”</p>
+    </div>
+  </div>
+  <p style="font-size:16px;line-height:1.6;color:var(--muted);max-width:56ch">Many people looking for PCOS, PCOD or PMOS support say the same thing: the advice they get doesn't fit their actual life, history, or body.</p>
+</div>
+
+<!-- CTA banner 1 -->
+<div style="background:var(--tint);padding:36px 24px;text-align:center">
+  <a class="cta-btn" href="#assessment" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 30px;border-radius:100px;display:inline-block">See where you stand — take the 2-min Assessment</a>
+</div>
+
+<!-- ============ DIFFERENTIATION — TWO CARDS ============ -->
+<div class="sec" style="max-width:1040px;margin:0 auto;padding:80px 24px 40px">
+  <h2 style="font-size:clamp(24px,6vw,34px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:12px">A Different Way to Approach PCOS, PCOD &amp; PMOS</h2>
+  <p style="text-align:center;color:var(--muted);font-size:15px;max-width:50ch;margin:0 auto 40px">Same problem, two very different approaches.</p>
+
+  <div class="diff-wrap" style="display:flex;gap:24px;align-items:stretch">
+
+    <div class="hover-card" style="flex:1 1 300px;background:#F0F9FA;border:1px solid var(--line);border-radius:22px;padding:32px 28px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:inline-flex;align-self:flex-start;background:#FFFFFF;color:var(--muted);font-weight:700;font-size:11.5px;letter-spacing:.04em;padding:6px 14px;border-radius:100px;border:1px solid var(--line)">THE OLD WAY</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:12px;align-items:flex-start;opacity:.75">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:#CFEEF0;display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:var(--muted)">Same diet chart for everyone</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;opacity:.75">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:#CFEEF0;display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:var(--muted)">Content you have to figure out alone</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;opacity:.75">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:#CFEEF0;display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:var(--muted)">One-size-fits-all supplements</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;opacity:.75">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:#CFEEF0;display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:var(--muted)">No one to ask follow-up questions to</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hover-card" style="flex:1 1 300px;background:linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#082D4A,var(--accent2)) border-box;border:2px solid transparent;border-radius:22px;padding:32px 28px;display:flex;flex-direction:column;gap:20px;box-shadow:0 10px 28px rgba(8,45,74,0.12)">
+      <div style="display:inline-flex;align-self:flex-start;background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;font-weight:700;font-size:11.5px;letter-spacing:.04em;padding:6px 14px;border-radius:100px">OUR APPROACH</div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:#2A2028;font-weight:600">A defined protocol — built around your case, not a template</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:#2A2028;font-weight:600">A real conversation with a doctor who listens</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:#2A2028;font-weight:600">Specific products and steps, matched to what you're actually experiencing</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center;margin-top:1px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+          </div>
+          <p style="font-size:14.5px;color:#2A2028;font-weight:600">Direct access to your doctor during your consultation</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size:15.5px;line-height:1.6;color:var(--muted);max-width:70ch;margin:32px auto 0;text-align:center">PCOS, PCOD and PMOS show up differently for everyone — irregular cycles, skin changes, weight shifts, fertility concerns, or all of the above. A plan that ignores that isn't really a plan. That's why we start with a conversation, not a checklist.</p>
+</div>
+
+<!-- CTA banner 2 -->
+<div style="padding:36px 24px 80px;text-align:center">
+  <a class="cta-btn" href="#assessment" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 30px;border-radius:100px;display:inline-block">Curious if this fits you? Start your Assessment</a>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div id="how-it-works" class="sec" style="background:var(--ink);padding:80px 24px;scroll-margin-top:80px">
+  <div style="max-width:1080px;margin:0 auto">
+    <h2 style="font-size:clamp(24px,6vw,34px);color:#FFFFFF;font-weight:600;text-align:center;margin-bottom:44px">How It Works</h2>
+    <div class="steps-wrap" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px">
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"></rect><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 1</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Take a 2-minute assessment</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path><path d="M9 15l2 2 4-4"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 2</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Book a call with a doctor (MBBS/MD)</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"></path><circle cx="18" cy="14" r="3"></circle><path d="M10 9v3a5 5 0 0 0 5 5"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 3</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Doctor reviews your history and builds your plan</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l3 3 5-6"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 4</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Get your plan, with ongoing support</p>
+      </div>
+
+    </div>
+    <p style="text-align:center;color:#AEE3E8;font-size:14px;margin-top:44px">Hundreds of women have already taken this assessment.</p>
+  </div>
+</div>
+
+<!-- ============ ASSESSMENT / QUIZ ============ -->
+<div id="assessment" class="sec" style="max-width:640px;margin:0 auto;padding:80px 24px;scroll-margin-top:80px">
+  <div style="text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;margin-bottom:32px">
+    <h2 style="font-size:clamp(22px,5.5vw,30px);color:var(--ink);font-weight:600">Start Your 2-Minute Assessment</h2>
+    <p style="font-size:15.5px;color:var(--muted);max-width:52ch">A few quick questions about your cycle, symptoms and goals — so your doctor already has context before your call.</p>
+  </div>
+
+  <div id="quiz-card" class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:24px;padding:36px 28px;box-shadow:0 14px 32px rgba(8,45,74,0.10)">
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px">
+      <span id="step-label" style="font-size:12px;font-weight:700;color:var(--muted2);letter-spacing:.03em">STEP 1 OF 12</span>
+      <div style="width:100%;height:6px;background:var(--tint);border-radius:100px;overflow:hidden">
+        <div id="progress-bar" style="width:8%;height:100%;background:linear-gradient(135deg,#082D4A,var(--accent2));border-radius:100px;transition:width .3s ease"></div>
+      </div>
+    </div>
+
+<div class="q-step" data-step="0" style="display:block">
+<div style="display:flex;flex-direction:column;gap:14px">
+  <h3 style="font-size:18px;color:var(--ink);font-weight:600;margin:0">Let's start with your details</h3>
+  <p style="font-size:13.5px;color:var(--muted);margin:0">So your doctor knows who they're speaking with.</p>
+  <input type="text" id="input-name" placeholder="Your name" oninput="clearNameError()" style="width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Work Sans',sans-serif;color:#2A2028;background:var(--bg)">
+  <input type="tel" id="input-phone" placeholder="Phone number" oninput="clearNameError()" style="width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Work Sans',sans-serif;color:#2A2028;background:var(--bg)">
+<p id="name-error" style="display:none;color:var(--accent2);font-size:12.5px;font-weight:600;margin:0">Please enter your name and a valid phone number to continue.</p>
+  <button type="button" onclick="startQuiz()" class="cta-btn" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;border:none;cursor:pointer;font-weight:700;font-size:15px;padding:15px 24px;border-radius:100px;margin-top:6px;font-family:'Work Sans',sans-serif">Continue</button>
+</div>
+</div>
+
+<div class="q-step" data-step="1" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">How are your periods these days?</h3>
+      <button type="button" onclick="selectAnswer(1,'regular')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Regular</button>
+      <button type="button" onclick="selectAnswer(1,'irregular')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Irregular or unpredictable</button>
+      <button type="button" onclick="selectAnswer(1,'absent')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Haven't come for several months</button>
+      <button type="button" onclick="selectAnswer(1,'not-sure')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Not sure</button>
+</div>
+</div>
+
+<div class="q-step" data-step="2" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">Which of these have you noticed?</h3>
+  <p style="font-size:12.5px;color:var(--muted2);margin:0 0 4px">Select all that apply</p>
+  <div style="display:flex;flex-direction:column;gap:10px">
+        <button type="button" class="multi-opt" id="multi-btn-acne" onclick="toggleMulti('acne')">
+          <span class="multi-check" id="multi-check-acne"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Acne / oily skin
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-hairgrowth" onclick="toggleMulti('hairgrowth')">
+          <span class="multi-check" id="multi-check-hairgrowth"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Extra hair growth (face/body)
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-hairthin" onclick="toggleMulti('hairthin')">
+          <span class="multi-check" id="multi-check-hairthin"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Hair thinning
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-weight" onclick="toggleMulti('weight')">
+          <span class="multi-check" id="multi-check-weight"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Weight changes
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-fatigue" onclick="toggleMulti('fatigue')">
+          <span class="multi-check" id="multi-check-fatigue"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Fatigue
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-mood" onclick="toggleMulti('mood')">
+          <span class="multi-check" id="multi-check-mood"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Mood swings
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-sleep" onclick="toggleMulti('sleep')">
+          <span class="multi-check" id="multi-check-sleep"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          Trouble sleeping
+        </button>
+        <button type="button" class="multi-opt" id="multi-btn-none" onclick="toggleMulti('none')">
+          <span class="multi-check" id="multi-check-none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg></span>
+          None of these
+        </button>
+  </div>
+<p id="multi-error" style="display:none;color:var(--accent2);font-size:12.5px;font-weight:600;margin:4px 0 0">Please select at least one option.</p>
+  <button type="button" onclick="continueMulti()" class="cta-btn" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;border:none;cursor:pointer;font-weight:700;font-size:15px;padding:15px 24px;border-radius:100px;margin-top:6px;font-family:'Work Sans',sans-serif">Continue</button>
+</div>
+</div>
+
+<div class="q-step" data-step="3" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">Has a doctor ever mentioned PCOS, PCOD or PMOS to you before?</h3>
+      <button type="button" onclick="selectAnswer(3,'confirmed')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Yes, I'm diagnosed</button>
+      <button type="button" onclick="selectAnswer(3,'suspected')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">It was suspected, but never confirmed</button>
+      <button type="button" onclick="selectAnswer(3,'no')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">No</button>
+      <button type="button" onclick="selectAnswer(3,'not-sure')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Not sure</button>
+</div>
+</div>
+
+<div class="q-step" data-step="4" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">What's your biggest goal right now?</h3>
+      <button type="button" onclick="selectAnswer(4,'understand')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Understanding what's going on</button>
+      <button type="button" onclick="selectAnswer(4,'manage-symptoms')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Managing symptoms</button>
+      <button type="button" onclick="selectAnswer(4,'conceive-plan')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Planning to conceive</button>
+      <button type="button" onclick="selectAnswer(4,'weight-mgmt')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Weight management</button>
+      <button type="button" onclick="selectAnswer(4,'overall-health')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Overall health</button>
+</div>
+</div>
+
+<div class="q-step" data-step="5" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">Have you tried anything before this?</h3>
+      <button type="button" onclick="selectAnswer(5,'diet')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Diet changes</button>
+      <button type="button" onclick="selectAnswer(5,'supplements')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Supplements</button>
+      <button type="button" onclick="selectAnswer(5,'medication')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Medication</button>
+      <button type="button" onclick="selectAnswer(5,'nothing')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Nothing yet</button>
+</div>
+</div>
+
+<div class="q-step" data-step="6" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">How's your energy level most days?</h3>
+      <button type="button" onclick="selectAnswer(6,'good')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Good</button>
+      <button type="button" onclick="selectAnswer(6,'low')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Low</button>
+      <button type="button" onclick="selectAnswer(6,'varies')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Varies a lot</button>
+</div>
+</div>
+
+<div class="q-step" data-step="7" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">How's your sleep?</h3>
+      <button type="button" onclick="selectAnswer(7,'good')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Good</button>
+      <button type="button" onclick="selectAnswer(7,'trouble')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Trouble falling or staying asleep</button>
+      <button type="button" onclick="selectAnswer(7,'irregular')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Very irregular</button>
+</div>
+</div>
+
+<div class="q-step" data-step="8" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">Are you planning to conceive in the next year?</h3>
+      <button type="button" onclick="selectAnswer(8,'yes')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Yes</button>
+      <button type="button" onclick="selectAnswer(8,'no')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">No</button>
+      <button type="button" onclick="selectAnswer(8,'undecided')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Haven't decided yet</button>
+</div>
+</div>
+
+<div class="q-step" data-step="9" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">Age group</h3>
+      <button type="button" onclick="selectAnswer(9,'under-20')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Under 20</button>
+      <button type="button" onclick="selectAnswer(9,'20-29')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">20–29</button>
+      <button type="button" onclick="selectAnswer(9,'30-39')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">30–39</button>
+      <button type="button" onclick="selectAnswer(9,'40-plus')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">40+</button>
+</div>
+</div>
+
+<div class="q-step" data-step="10" style="display:none">
+<div style="display:flex;flex-direction:column;gap:12px">
+  <h3 style="font-size:17px;color:var(--ink);font-weight:600;margin:0 0 4px">How much does this affect your day-to-day life?</h3>
+      <button type="button" onclick="selectAnswer(10,'not-much')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Not much</button>
+      <button type="button" onclick="selectAnswer(10,'some-extent')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">To some extent</button>
+      <button type="button" onclick="selectAnswer(10,'quite-a-lot')" style="width:100%;text-align:left;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:#FFFFFF;color:#2A2028;font-size:14.5px;font-weight:500;font-family:'Work Sans',sans-serif;cursor:pointer;transition:border-color .15s ease,background .15s ease">Quite a lot</button>
+</div>
+</div>
+
+<div class="q-step" data-step="11" style="display:none">
+<div style="display:flex;flex-direction:column;gap:16px;text-align:center;align-items:center">
+  <div style="width:52px;height:52px;border-radius:50%;background:var(--tint);display:flex;align-items:center;justify-content:center">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+  </div>
+  <h3 style="font-size:19px;color:var(--ink);font-weight:600;margin:0"><span id="first-name">Your</span> assessment is ready</h3>
+  <p style="font-size:14.5px;color:var(--muted);max-width:44ch;margin:0">Based on your answers, the right next step is a 1-on-1 consultation with an MBBS/MD doctor, so your plan is built around your actual history — not a generic template.</p>
+
+  <div style="width:100%;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#082D4A,var(--accent2)) border-box;border:1.5px solid transparent;border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:6px;align-items:center">
+    <p style="font-size:12px;font-weight:700;color:var(--accent2);letter-spacing:.03em;margin:0">CONSULTATION FEE</p>
+    <p style="font-size:32px;font-weight:700;color:var(--ink);font-family:'Sora',system-ui,sans-serif;margin:0">₹999</p>
+    <p style="font-size:12.5px;color:var(--muted);margin:0">Fully adjusted against your plan if you continue. Non-refundable otherwise.</p>
+  </div>
+
+  <div style="width:100%;background:var(--tint);border-radius:16px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;text-align:left">
+    <div style="flex:none;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center;margin-top:2px">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+    </div>
+    <div>
+      <p style="font-size:13.5px;font-weight:700;color:var(--ink);margin:0 0 3px">Bonus: our full PCOS / PCOD / PMOS guide, free</p>
+      <p style="font-size:13px;color:var(--muted);margin:0;line-height:1.5">Complete your booking and we'll send you our 33-page guide alongside your consultation — no extra cost.</p>
+    </div>
+  </div>
+
+  <a href="#book" class="cta-btn pulse-cta" style="width:100%;box-sizing:border-box;background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:16px 24px;border-radius:100px;margin-top:4px">Continue to Book Your Consultation</a>
+</div>
+</div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:20px">
+    <a class="cta-outline" href="#book" style="transition:background .18s ease,color .18s ease;background:transparent;color:var(--muted);text-decoration:none;font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:100px;border:1.5px solid var(--line)">Prefer to skip ahead? Book directly</a>
+  </div>
+</div>
+
+<!-- ============ DOCTOR CREDIBILITY ============ -->
+<div class="sec" style="background:var(--tint);padding:80px 24px">
+  <div class="hover-card" style="max-width:760px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:22px;align-items:center;background:#FFFFFF;border-radius:28px;padding:48px 36px;border:1px solid var(--line)">
+    <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#082D4A,var(--accent2));display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"></path><circle cx="18" cy="14" r="3"></circle><path d="M10 9v3a5 5 0 0 0 5 5"></path></svg>
+    </div>
+    <h2 style="font-size:clamp(22px,5.5vw,28px);color:var(--ink);font-weight:600">Backed by Real Medical Expertise</h2>
+    <p style="font-size:16px;color:var(--ink);font-weight:600">MBBS, MD-Qualified Doctors</p>
+    <p style="font-size:14.5px;color:var(--muted);max-width:44ch">Years of combined clinical experience, specialising in hormonal and metabolic health.</p>
+    <p style="font-size:15px;color:#2A2028;font-style:italic;max-width:48ch;line-height:1.6">“Every plan is reviewed and built by a licensed doctor — never an algorithm, never a generic template.”</p>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:8px">
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        MBBS, MD Verified
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        5,000+ Consultations Completed
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        1-on-1, Not a Call Center
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA banner 3 -->
+<div style="padding:40px 24px;text-align:center">
+  <a class="cta-btn" href="#book" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 30px;border-radius:100px;display:inline-block">Talk to Our Doctor — Book Now</a>
+</div>
+
+<!-- ============ WHAT TO EXPECT ============ -->
+<div style="max-width:1180px;margin:0 auto;padding:40px 24px 80px;display:flex;flex-wrap:wrap;gap:48px;align-items:center">
+  <div class="hero-col" style="flex:1 1 360px;min-width:280px">
+    <img class="resp-img" src="assets/hero-kitchen.jpg" alt="Woman preparing fresh vegetables in her kitchen" style="width:100%;height:340px;object-fit:cover;border-radius:24px;display:block;box-shadow:0 20px 44px rgba(8,45,74,0.14)">
+  </div>
+  <div class="hero-col" style="flex:1 1 380px;min-width:280px;display:flex;flex-direction:column;gap:20px">
+    <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600">What to Expect From Your Consultation</h2>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <svg width="18" height="18" style="flex:none;margin-top:2px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:15px;color:#2A2028">A real conversation, not a script</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <svg width="18" height="18" style="flex:none;margin-top:2px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:15px;color:#2A2028">Your history reviewed before any recommendation</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <svg width="18" height="18" style="flex:none;margin-top:2px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:15px;color:#2A2028">A plan you can realistically start the same week</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA banner 4 -->
+<div style="background:var(--tint);padding:36px 24px;text-align:center">
+  <a class="cta-btn" href="#book" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 30px;border-radius:100px;display:inline-block">Start Your Consultation Today</a>
+</div>
+
+<!-- ============ PRICING / BOOKING ============ -->
+<div id="book" class="sec" style="max-width:600px;margin:0 auto;padding:80px 24px;scroll-margin-top:80px">
+  <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:32px">Simple, Transparent Pricing</h2>
+  <div class="hover-card" style="background:#FFFFFF;border:2px solid transparent;background-image:linear-gradient(#fff,#fff),linear-gradient(135deg,#082D4A,var(--accent2));background-origin:border-box;background-clip:padding-box,border-box;border-radius:26px;padding:36px 32px;display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center;box-shadow:0 14px 32px rgba(8,45,74,0.14)">
+    <p style="font-size:14px;font-weight:700;color:var(--accent2);letter-spacing:0.02em">CONSULTATION FEE</p>
+    <p style="font-size:clamp(36px,10vw,50px);font-weight:700;color:var(--ink);font-family:'Sora',system-ui,sans-serif">₹999</p>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;width:100%;max-width:340px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028;text-align:left">1-on-1 call with an MBBS/MD doctor</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028;text-align:left">Personalised plan built from your history</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028;text-align:left"><strong>Fully adjusted against your plan</strong> if you continue</p>
+      </div>
+    </div>
+    <a class="cta-btn" href="https://cal.com/doctor-pj77l1/30min" target="_blank" rel="noopener" style="width:100%;box-sizing:border-box;background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:16px 20px;border-radius:100px;text-align:center;margin-top:4px">Book Your Slot</a>
+    <p style="font-size:12px;color:var(--muted2)">Opens Cal.com to pick a time. Payment collection here is coming next — for now this books directly.</p>
+    <p style="font-size:12px;color:var(--muted2)">Non-refundable if you choose not to continue with a plan.</p>
+  </div>
+</div>
+
+<!-- ============ FAQ ============ -->
+<div class="sec" style="background:#FFFFFF;padding:80px 24px">
+  <div style="max-width:760px;margin:0 auto">
+    <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:36px">Frequently Asked Questions</h2>
+    <div style="display:flex;flex-direction:column;gap:0">
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Is this a diagnosis?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">The online assessment itself isn't a diagnosis — it just gives your doctor context before your call. The consultation is a real medical consultation: your doctor can diagnose your condition and prescribe medication, supplements or a personalised treatment plan, and will advise if in-person testing or a specialist referral is needed.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">What happens on the call?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Your doctor reviews your assessment answers and asks follow-up questions about your history, symptoms and goals, then explains what a personalised plan would involve for you.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Is the consultation fee refundable?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">The consultation fee is non-refundable. If you choose to go ahead with your personalised plan, the full fee is adjusted against it — no extra charge.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">How soon do I get my plan after the call?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Most plans are delivered within 2–4 hours of your consultation.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Is my information kept private?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Yes. Your assessment answers and consultation details are used only to build your plan and are not shared outside our clinical team.</p>
+      </details>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ FINAL CTA ============ -->
+<div class="sec" style="background:var(--ink);padding:72px 24px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;position:relative;overflow:hidden">
+  <div class="blob-a" style="position:absolute;top:-40px;right:-60px;width:220px;height:220px;border-radius:50%;background:var(--accent2);opacity:0.16;filter:blur(28px);pointer-events:none"></div>
+  <h2 style="font-size:clamp(22px,6vw,32px);color:#FFFFFF;font-weight:600;max-width:20ch;position:relative">Ready for a plan that's actually built for you?</h2>
+  <a class="cta-btn pulse-cta" href="#book" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:16px;padding:17px 34px;border-radius:100px;display:inline-block;position:relative">Book Your Consultation — ₹999</a>
+  <p style="color:#AEE3E8;font-size:13px;position:relative">No obligation to buy anything after your call.</p>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="padding:40px 24px 120px;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:12px">
+  <img src="assets/logo-horizontal.svg" alt="LifelineX" style="height:22px;width:auto;display:block">
+  <p style="font-size:12.5px;color:var(--muted2);line-height:1.6;max-width:70ch">LifelineX connects you with a licensed doctor (MBBS/MD) for an online consultation. Based on that consultation, your doctor may prescribe medication, supplements or a personalised treatment plan, with digital follow-up support. This is a telemedicine service — your doctor will advise if an in-person examination or specialist referral is needed. If you are experiencing a medical emergency, contact your local emergency services immediately.</p>
+  <p style="font-size:12px;color:var(--muted2)">© 2026 LifelineX. All rights reserved.</p>
+</div>
+
+<!-- ============ STICKY BOTTOM BAR ============ -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:50;background:#FFFFFF;border-top:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:center;box-shadow:0 -4px 16px rgba(8,45,74,0.10)">
+  <a class="cta-btn" href="#book" style="background:linear-gradient(135deg,#082D4A,var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15px;padding:13px 30px;border-radius:100px;width:100%;max-width:420px;text-align:center">Book Your Consultation — ₹999</a>
+</div>
+
+</div>
+<script src="quiz.js"></script>
+</body>
+</html>
