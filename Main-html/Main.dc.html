@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LifelineX | Doctor-Led Online Health Consultations</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+*{box-sizing:border-box}
+:root{
+  --ink:#082D4A;
+  --tint:#E3F6F7;
+  --bg:#F5FAFB;
+  --card:#FFFFFF;
+  --line:#DCEEF0;
+  --muted:#4A6478;
+  --muted2:#7C93A0;
+  --accent2:#00B9C4;
+}
+body{margin:0;font-family:'Work Sans',system-ui,sans-serif;background:var(--bg);color:#2A2028}
+a{color:var(--accent2)}
+a:hover{color:#067884}
+h1,h2,h3{font-family:'Sora',system-ui,sans-serif;margin:0}
+p{margin:0}
+details summary{cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+
+.cta-btn{transition:transform .18s ease, box-shadow .18s ease, filter .18s ease}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,185,196,0.38);filter:brightness(1.04)}
+.cta-outline:hover{background:var(--ink) !important;color:#FFFFFF !important}
+
+.hover-card{transition:transform .2s ease, box-shadow .2s ease}
+.hover-card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(8,45,74,0.16)}
+
+.step-card{transition:transform .2s ease, background .2s ease, border-color .2s ease}
+.step-card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.09) !important;border-color:rgba(255,255,255,0.28) !important}
+
+.concern-card{transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;text-decoration:none;display:flex;flex-direction:column;gap:14px}
+.concern-card.live:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(8,45,74,0.16);border-color:var(--accent2) !important}
+.concern-card.soon{opacity:0.72;cursor:default}
+
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(16px,-20px) scale(1.05)}}
+.blob-a{animation:floatBlob 9s ease-in-out infinite}
+.blob-b{animation:floatBlob 11s ease-in-out infinite reverse}
+
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,185,196,0.45)}50%{box-shadow:0 0 0 16px rgba(0,185,196,0)}}
+.pulse-cta{animation:pulseGlow 2.4s ease-in-out infinite}
+
+.faq-item summary::after{content:"+";float:right;font-size:20px;color:var(--accent2);font-weight:700;transition:transform .2s ease}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:14px}
+.nav-links a:hover{color:var(--accent2)}
+
+@media (max-width:900px){
+  .nav-links{display:none !important}
+}
+@media (max-width:680px){
+  .grid-3{grid-template-columns:1fr !important}
+  .concern-grid{grid-template-columns:1fr !important}
+  .steps-wrap{grid-template-columns:1fr 1fr !important;gap:20px 16px !important}
+  .diff-wrap{flex-direction:column !important}
+  .hero-col{min-width:0 !important;width:100% !important}
+  .resp-img{height:220px !important}
+  .topbar{padding:10px 16px !important}
+  .topbar-cta{font-size:12.5px !important;padding:9px 14px !important}
+  .trust-row{gap:14px !important;padding:14px 16px !important}
+  .trust-row>div{font-size:12px !important}
+  .sec{padding-top:48px !important;padding-bottom:48px !important}
+  .footer-cols{grid-template-columns:1fr 1fr !important}
+}
+@media (max-width:400px){
+  .topbar-brand{display:none !important}
+  .topbar-brand-icon{display:block !important}
+  .topbar-cta{font-size:11.5px !important;padding:9px 12px !important}
+  .footer-cols{grid-template-columns:1fr !important}
+}
+</style>
+</helmet>
+
+<div style="width:100%;position:relative">
+
+<!-- ============ STICKY TOP BAR ============ -->
+<div class="topbar" style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(245,250,251,0.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+  <img class="topbar-brand" src="/_blob/efd98e43361c2ad8a1cfb96bfa2298c3" alt="LifelineX" style="height:26px;width:auto;display:block">
+  <img class="topbar-brand-icon" src="/_blob/d1331d08f76642d24167c465b9ea70e3" alt="LifelineX" style="height:28px;width:auto;display:none">
+  <nav class="nav-links">
+    <a href="#concerns">Health Concerns</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#why">Why LifelineX</a>
+    <a href="#doctors">Doctors</a>
+    <a href="#faq">FAQs</a>
+  </nav>
+  <a class="topbar-cta cta-btn" href="#concerns" style="background:linear-gradient(135deg,{{accent}},var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:100px;white-space:nowrap">Start Assessment</a>
+</div>
+
+<div style="height:68px"></div>
+
+<!-- ============ HERO ============ -->
+<div style="position:relative;overflow:hidden">
+  <div class="blob-a" style="position:absolute;top:-60px;left:-80px;width:280px;height:280px;border-radius:50%;background:var(--accent2);opacity:0.14;filter:blur(30px);pointer-events:none"></div>
+  <div class="blob-b" style="position:absolute;bottom:-100px;right:-60px;width:340px;height:340px;border-radius:50%;background:var(--ink);opacity:0.08;filter:blur(36px);pointer-events:none"></div>
+
+  <div class="hero-flex" style="max-width:1180px;margin:0 auto;padding:56px 24px 40px;display:flex;flex-wrap:wrap-reverse;align-items:center;gap:48px;position:relative">
+    <div class="hero-col" style="flex:1 1 420px;min-width:300px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:inline-flex;align-self:flex-start;background:var(--tint);color:var(--ink);font-weight:700;font-size:13px;padding:7px 14px;border-radius:100px;border:1px solid var(--line)">Doctor-Led Online Care</div>
+      <h1 style="font-size:clamp(28px,7.5vw,46px);line-height:1.12;color:var(--ink);font-weight:600">Find the right <span style="background:linear-gradient(135deg,{{accent}},var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">next step</span> for your health.</h1>
+      <p style="font-size:17px;line-height:1.55;color:var(--muted);max-width:46ch">Start with a structured assessment and consult a qualified doctor online for hormonal, metabolic and complex health concerns.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px">
+        <a class="cta-btn pulse-cta" href="#concerns" style="background:linear-gradient(135deg,{{accent}},var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 28px;border-radius:100px">Choose Your Health Concern</a>
+        <a class="cta-outline" href="#how-it-works" style="transition:background .18s ease,color .18s ease;background:transparent;color:var(--ink);text-decoration:none;font-weight:600;font-size:15.5px;padding:15px 22px;border-radius:100px;border:1.5px solid var(--ink)">See How It Works</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+        <p style="font-size:13px;color:var(--muted2);font-weight:600">Private assessment • Online consultation • ₹999</p>
+        <p style="font-size:12px;color:var(--muted2)">Diagnostics, recommended protocols and continued support, if selected, are charged separately.</p>
+      </div>
+    </div>
+    <div class="hero-col" style="flex:1 1 380px;min-width:280px">
+      <img class="resp-img" src="/_blob/89e25797b18786af136dafc502f45b13" alt="Two women walking together outdoors, in conversation" style="width:100%;height:380px;object-fit:cover;border-radius:24px;display:block;box-shadow:0 20px 44px rgba(8,45,74,0.18)">
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONCERN SELECTOR ============ -->
+<div id="concerns" class="sec" style="max-width:1180px;margin:0 auto;padding:80px 24px 40px;scroll-margin-top:80px">
+  <div style="text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;margin-bottom:44px">
+    <h2 style="font-size:clamp(24px,6vw,34px);color:var(--ink);font-weight:600">What would you like help with?</h2>
+    <p style="font-size:15.5px;color:var(--muted);max-width:56ch">Choose the concern closest to what you're experiencing — we'll guide you to the right assessment.</p>
+  </div>
+
+  <!-- Group: Women's & Hormonal Health -->
+  <p style="font-size:12.5px;font-weight:700;color:var(--muted2);letter-spacing:.04em;margin-bottom:14px">WOMEN'S &amp; HORMONAL HEALTH</p>
+  <div class="concern-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:40px">
+
+    <a class="concern-card live hover-card" href="https://claude.ai/artifact/JPCDhR8hyUDs6qkW1V9sr4" target="_blank" rel="noopener" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 0 12 6 6 0 0 0 6-6c0 4-3 9-9 9a9 9 0 1 1 3-17.5"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">PCOS / PCOD / PMOS</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Irregular cycles, hormonal symptoms and related concerns.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--tint);color:var(--ink);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">AVAILABLE NOW</div>
+      <p style="font-size:13.5px;font-weight:700;color:var(--accent2);margin-top:2px">Explore PCOS Care →</p>
+    </a>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3c0 2-2 3-2 6a6 6 0 0 0 12 0c0-3-2-4-2-6"></path><path d="M9 3h6"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Thyroid Health</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Fatigue, weight shifts and metabolism-related symptoms.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 5C19 15.5 12 20 12 20z"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Fertility-Related Health</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Support for conception planning and related concerns.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+  </div>
+
+  <!-- Group: Metabolic Health -->
+  <p style="font-size:12.5px;font-weight:700;color:var(--muted2);letter-spacing:.04em;margin-bottom:14px">METABOLIC HEALTH</p>
+  <div class="concern-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:40px">
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M6 19l3-9 3 5 2-3 3 7"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Weight &amp; Metabolic Health</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">A structured, doctor-guided approach to weight and metabolism.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Type 2 Diabetes Support</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Ongoing guidance for blood sugar and lifestyle management.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px;visibility:hidden"></div>
+  </div>
+
+  <!-- Group: Other Health Concerns -->
+  <p style="font-size:12.5px;font-weight:700;color:var(--muted2);letter-spacing:.04em;margin-bottom:14px">OTHER HEALTH CONCERNS</p>
+  <div class="concern-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px">
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21c-2-4 0-7 2-9-2 0-4-2-3-5 2 1 3 0 3-2 3 1 5 4 5 8 0 3-2 5-3 8"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Hair &amp; Skin Concerns</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Hair thinning, acne and related skin changes.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Autoimmune Conditions</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">Guidance for chronic, immune-related health concerns.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+
+    <div class="concern-card soon hover-card" style="background:#FFFFFF;border:1.5px solid var(--line);border-radius:20px;padding:26px 22px">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6C19 16.65 12 21 12 21z"></path><path d="M12 3v3"></path></svg>
+      </div>
+      <div>
+        <p style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px">Complex &amp; Supportive Care</p>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.5">For concerns that need a broader, ongoing care plan.</p>
+      </div>
+      <div style="display:inline-flex;align-self:flex-start;background:var(--line);color:var(--muted);font-weight:700;font-size:11px;padding:5px 12px;border-radius:100px">COMING SOON</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA banner -->
+<div style="background:var(--tint);padding:36px 24px;text-align:center;margin-top:56px">
+  <a class="cta-btn" href="#concerns" style="background:linear-gradient(135deg,{{accent}},var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15.5px;padding:15px 30px;border-radius:100px;display:inline-block">Choose Your Health Concern</a>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div id="how-it-works" class="sec" style="background:var(--ink);padding:80px 24px;scroll-margin-top:80px">
+  <div style="max-width:1080px;margin:0 auto">
+    <h2 style="font-size:clamp(24px,6vw,34px);color:#FFFFFF;font-weight:600;text-align:center;margin-bottom:44px">How LifelineX Works</h2>
+    <div class="steps-wrap" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px">
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 1</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Choose your concern</p>
+        <p style="color:#AEE3E8;font-size:13px;line-height:1.5">Select the health area that best matches what you're experiencing.</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"></rect><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 2</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Complete your assessment</p>
+        <p style="color:#AEE3E8;font-size:13px;line-height:1.5">Share relevant symptoms, history and concerns through a private digital assessment.</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"></path><circle cx="18" cy="14" r="3"></circle><path d="M10 9v3a5 5 0 0 0 5 5"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 3</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Consult a doctor</p>
+        <p style="color:#AEE3E8;font-size:13px;line-height:1.5">Pay ₹999 and book your online consultation. You'll be connected with a qualified doctor after booking.</p>
+      </div>
+
+      <div class="step-card" style="border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.04);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l3 3 5-6"></path></svg>
+        </div>
+        <p style="color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:.03em;opacity:.65">STEP 4</p>
+        <p style="color:#FFFFFF;font-weight:600;font-size:15px">Choose your next step</p>
+        <p style="color:#AEE3E8;font-size:13px;line-height:1.5">Review your doctor's recommendations and decide whether to proceed with diagnostics, a protocol or continued support.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ WHY LIFELINEX ============ -->
+<div id="why" class="sec" style="max-width:1080px;margin:0 auto;padding:80px 24px;scroll-margin-top:80px">
+  <h2 style="font-size:clamp(24px,6vw,34px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:44px">Why LifelineX</h2>
+  <div class="grid-3" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px">
+
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      </div>
+      <p style="font-size:16px;font-weight:700;color:var(--ink)">Condition-Focused Assessments</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.55">Each assessment is built around the specific concern you're dealing with — not a generic questionnaire.</p>
+    </div>
+
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"></path><circle cx="18" cy="14" r="3"></circle><path d="M10 9v3a5 5 0 0 0 5 5"></path></svg>
+      </div>
+      <p style="font-size:16px;font-weight:700;color:var(--ink)">Qualified Doctor Consultations</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.55">Every consultation is with a qualified doctor (MBBS/MD) — never an algorithm or a call-center script.</p>
+    </div>
+
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path><path d="M9 15l2 2 4-4"></path></svg>
+      </div>
+      <p style="font-size:16px;font-weight:700;color:var(--ink)">A Clear Digital Journey</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.55">Assessment, consultation and next steps — all in one place, without confusing back-and-forth.</p>
+    </div>
+
+    <div class="hover-card" style="background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:12px">
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4l3 2"></path></svg>
+      </div>
+      <p style="font-size:16px;font-weight:700;color:var(--ink)">Optional Continued Support</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.55">Diagnostics, protocols and follow-up are offered only if relevant, and always your choice.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ WHAT HAPPENS AFTER ============ -->
+<div class="sec" style="background:#FFFFFF;padding:80px 24px">
+  <div style="max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+    <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600;text-align:center">What happens after your consultation</h2>
+    <p style="font-size:15.5px;color:var(--muted);text-align:center;line-height:1.6">Your doctor reviews your assessment and consultation, then lets you know what would genuinely help. Depending on your situation, that might include:</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+      <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:16px 18px">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028">Recommended diagnostic tests</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:16px 18px">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028">A structured health protocol</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:16px 18px">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028">Educational guidance for your specific concern</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg);border-radius:14px;padding:16px 18px">
+        <svg width="16" height="16" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        <p style="font-size:14px;color:#2A2028">Relevant products, supplements or ongoing support, where appropriate</p>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted2);text-align:center;line-height:1.6;max-width:64ch;margin:0 auto">Recommendations vary from person to person, and you decide whether to go ahead with any additional paid offering — nothing is added automatically.</p>
+  </div>
+</div>
+
+<!-- ============ DOCTOR-LED CARE ============ -->
+<div id="doctors" class="sec" style="background:var(--tint);padding:80px 24px;scroll-margin-top:80px">
+  <div class="hover-card" style="max-width:760px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;background:#FFFFFF;border-radius:28px;padding:48px 36px;border:1px solid var(--line)">
+    <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,{{accent}},var(--accent2));display:flex;align-items:center;justify-content:center">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"></path><circle cx="18" cy="14" r="3"></circle><path d="M10 9v3a5 5 0 0 0 5 5"></path></svg>
+    </div>
+    <h2 style="font-size:clamp(22px,5.5vw,28px);color:var(--ink);font-weight:600">Doctor-Led, Every Time</h2>
+    <p style="font-size:14.5px;color:var(--muted);max-width:52ch;line-height:1.6">LifelineX consultations are conducted by qualified doctors (MBBS/MD). Doctors are assigned based on availability and your specific concern, so we don't tie the experience to a single doctor's profile.</p>
+    <div style="width:100%;max-width:420px;border:1.5px dashed var(--line);border-radius:16px;padding:20px;background:var(--bg)">
+      <p style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px">Meet your assigned doctor after booking</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.55">Once you book your consultation, you'll be matched with a qualified doctor suited to your concern. Their name, qualification and registration details are shared with you ahead of your call.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:4px">
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        MBBS / MD Verified
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        1-on-1 — Not a Call Center
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+        Matched to Your Concern
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TRUST & PRIVACY ============ -->
+<div class="sec" style="max-width:900px;margin:0 auto;padding:80px 24px">
+  <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:36px">Built Around Your Privacy and Your Choice</h2>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <svg width="17" height="17" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      <p style="font-size:14.5px;color:#2A2028;line-height:1.55">Your assessment answers are kept private and used only to inform your consultation.</p>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <svg width="17" height="17" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      <p style="font-size:14.5px;color:#2A2028;line-height:1.55">Consultation pricing is shown upfront — ₹999, nothing hidden.</p>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <svg width="17" height="17" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      <p style="font-size:14.5px;color:#2A2028;line-height:1.55">You are never automatically enrolled into a protocol or subscription.</p>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <svg width="17" height="17" style="flex:none;margin-top:3px" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5.5L20 6"></path></svg>
+      <p style="font-size:14.5px;color:#2A2028;line-height:1.55">Every additional purchase — diagnostics, protocol or support — is your choice.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FAQ ============ -->
+<div id="faq" class="sec" style="background:#FFFFFF;padding:80px 24px;scroll-margin-top:80px">
+  <div style="max-width:760px;margin:0 auto">
+    <h2 style="font-size:clamp(22px,6vw,30px);color:var(--ink);font-weight:600;text-align:center;margin-bottom:36px">Frequently Asked Questions</h2>
+    <div style="display:flex;flex-direction:column;gap:0">
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">What is LifelineX?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">LifelineX is a doctor-led online platform that helps you understand a health concern, consult a qualified doctor, and decide on an appropriate next step.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">How does the online consultation work?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">After your assessment, you pay the consultation fee and book a time online. You'll then be connected with a qualified doctor for your consultation.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">What is included in the ₹999 consultation?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">The ₹999 fee covers your assessment review and a 1-on-1 consultation with a qualified doctor.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Are diagnostic tests included in ₹999?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">No. If your doctor recommends diagnostic tests, these are arranged and charged separately.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Are protocols or products included in the consultation price?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">No. Any recommended protocol, product or supplement is offered separately, and only if relevant to you.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">How is a doctor assigned?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Doctors are assigned based on availability and the health concern you've chosen. All LifelineX doctors are qualified (MBBS/MD).</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Can I choose not to purchase a protocol?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Yes. The consultation gives you your doctor's recommendations — deciding whether to proceed with anything further is entirely up to you.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">How will I receive my consultation recommendations?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Your doctor shares recommendations with you directly after your consultation, along with any suggested next steps.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">Is LifelineX suitable for emergencies?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">No. LifelineX is not an emergency service.</p>
+      </details>
+
+      <details class="faq-item" style="border-bottom:1px solid var(--line);padding:18px 0">
+        <summary style="font-size:15.5px;font-weight:600;color:var(--ink);list-style:none">What should I do if I need urgent medical attention?</summary>
+        <p style="font-size:14.5px;color:var(--muted);margin-top:12px;line-height:1.6">Please contact your local emergency services or visit the nearest hospital immediately. Do not wait for an online consultation.</p>
+      </details>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ FINAL CTA ============ -->
+<div class="sec" style="background:var(--ink);padding:72px 24px;text-align:center;display:flex;flex-direction:column;gap:20px;align-items:center;position:relative;overflow:hidden">
+  <div class="blob-a" style="position:absolute;top:-40px;right:-60px;width:220px;height:220px;border-radius:50%;background:var(--accent2);opacity:0.16;filter:blur(28px);pointer-events:none"></div>
+  <h2 style="font-size:clamp(22px,6vw,32px);color:#FFFFFF;font-weight:600;max-width:22ch;position:relative">Your next step can start with understanding.</h2>
+  <p style="color:#AEE3E8;font-size:14px;position:relative;max-width:48ch">Complete a short assessment and book your online doctor consultation.</p>
+  <a class="cta-btn pulse-cta" href="#concerns" style="background:linear-gradient(135deg,{{accent}},var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:16px;padding:17px 34px;border-radius:100px;display:inline-block;position:relative">Choose Your Health Concern</a>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div style="padding:48px 24px 60px;max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+  <div class="footer-cols" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <img src="/_blob/efd98e43361c2ad8a1cfb96bfa2298c3" alt="LifelineX" style="height:22px;width:auto;display:block">
+      <p style="font-size:12.5px;color:var(--muted2);line-height:1.6;max-width:36ch">LifelineX connects you with a licensed doctor (MBBS/MD) for an online consultation. This is a telemedicine service — your doctor will advise if an in-person examination or specialist referral is needed. If you are experiencing a medical emergency, contact your local emergency services immediately.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <p style="font-size:12.5px;font-weight:700;color:var(--ink);letter-spacing:.03em">HEALTH CONCERNS</p>
+      <a href="https://claude.ai/artifact/JPCDhR8hyUDs6qkW1V9sr4" target="_blank" rel="noopener" style="font-size:13px;color:var(--muted);text-decoration:none">PCOS / PCOD / PMOS</a>
+      <p style="font-size:13px;color:var(--muted2)">Thyroid Health — coming soon</p>
+      <p style="font-size:13px;color:var(--muted2)">Weight &amp; Metabolic Health — coming soon</p>
+      <p style="font-size:13px;color:var(--muted2)">More concerns — coming soon</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <p style="font-size:12.5px;font-weight:700;color:var(--ink);letter-spacing:.03em">COMPANY</p>
+      <p style="font-size:13px;color:var(--muted2)">About LifelineX [add link]</p>
+      <p style="font-size:13px;color:var(--muted2)">Contact [add details]</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <p style="font-size:12.5px;font-weight:700;color:var(--ink);letter-spacing:.03em">LEGAL</p>
+      <p style="font-size:13px;color:var(--muted2)">Privacy Policy [add link]</p>
+      <p style="font-size:13px;color:var(--muted2)">Terms &amp; Conditions [add link]</p>
+      <p style="font-size:13px;color:var(--muted2)">Cancellation &amp; Refund Policy [add link]</p>
+      <p style="font-size:13px;color:var(--muted2)">Teleconsultation Information [add link]</p>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px">
+    <p style="font-size:12px;color:var(--muted2)">© 2026 LifelineX. All rights reserved.</p>
+    <p style="font-size:12px;color:var(--muted2)">[Social links to be added]</p>
+  </div>
+</div>
+
+<!-- ============ STICKY BOTTOM BAR ============ -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:50;background:#FFFFFF;border-top:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:center;box-shadow:0 -4px 16px rgba(8,45,74,0.10)">
+  <a class="cta-btn" href="#concerns" style="background:linear-gradient(135deg,{{accent}},var(--accent2));color:#FFFFFF;text-decoration:none;font-weight:700;font-size:15px;padding:13px 30px;border-radius:100px;width:100%;max-width:420px;text-align:center">Choose Your Health Concern</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#082D4A","options":["#082D4A","#00B9C4"]},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#082D4A' };
+  }
+}
+</script>
+</body>
+</html>

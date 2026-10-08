@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Assessment {
+  id          String         @id @default(cuid())
+  name        String
+  phone       String
+  answers     Json
+  symptoms    String[]
+  consentedAt DateTime?
+  createdAt   DateTime       @default(now())
+  orders      PaymentOrder[]
+  bookings    Booking[]
+
+  @@index([createdAt])
+}
+
+model PaymentOrder {
+  id               String        @id @default(cuid())
+  cashfreeOrderId  String        @unique
+  paymentSessionId String?
+  cfPaymentId      String?
+  amount           Int
+  currency         String        @default("INR")
+  status           PaymentStatus @default(CREATED)
+  customerName     String
+  customerPhone    String
+  assessmentId     String?
+  assessment       Assessment?   @relation(fields: [assessmentId], references: [id])
+  booking          Booking?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([customerPhone])
+  @@index([status, createdAt])
+}
+
+enum PaymentStatus {
+  CREATED
+  PAID
+  FAILED
+  EXPIRED
+}
+
+// ---------- Scheduling ----------
+
+// One consultation slot taken by one paid order. `seat` numbers parallel consultations in the
+// same slot (1..capacity); the unique index makes double-booking impossible even under races.
+// Cancelling sets seat to null, which frees the slot (Postgres treats NULLs as distinct).
+model Booking {
+  id              String        @id @default(cuid())
+  orderId         String        @unique
+  order           PaymentOrder  @relation(fields: [orderId], references: [id])
+  assessmentId    String?
+  assessment      Assessment?   @relation(fields: [assessmentId], references: [id])
+  startsAt        DateTime
+  endsAt          DateTime
+  seat            Int?
+  status          BookingStatus @default(CONFIRMED)
+  customerName    String
+  customerPhone   String
+  doctorId        String?
+  doctor          Doctor?       @relation(fields: [doctorId], references: [id])
+  meetingUrl      String?
+  adminNotes      String?
+  rescheduleCount Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([startsAt, seat])
+  @@index([startsAt])
+  @@index([status, startsAt])
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Doctor {
+  id                 String    @id @default(cuid())
+  name               String
+  qualification      String
+  registrationNumber String
+  active             Boolean   @default(true)
+  bookings           Booking[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+// Single row (id = 1). Times are interpreted in IST (Asia/Kolkata).
+model ScheduleSettings {
+  id                    Int      @id @default(1)
+  slotMinutes           Int      @default(30)
+  capacity              Int      @default(1)
+  minNoticeMinutes      Int      @default(120)
+  horizonDays           Int      @default(14)
+  rescheduleCutoffHours Int      @default(12)
+  maxReschedules        Int      @default(2)
+  updatedAt             DateTime @updatedAt
+}
+
+// Opening hours: one row per range, several ranges per weekday allowed (0 = Sunday).
+// Minutes from midnight IST, end exclusive.
+model WeeklyHours {
+  id          String @id @default(cuid())
+  weekday     Int
+  startMinute Int
+  endMinute   Int
+
+  @@index([weekday])
+}
+
+model BlockedPeriod {
+  id        String   @id @default(cuid())
+  startsAt  DateTime
+  endsAt    DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@index([startsAt, endsAt])
+}
+
+// ---------- Admin ----------
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  passwordHash String
+  role         AdminRole      @default(STAFF)
+  active       Boolean        @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime       @default(now())
+  sessions     AdminSession[]
+  auditLogs    AuditLog[]
+}
+
+enum AdminRole {
+  ADMIN
+  STAFF
+}
+
+// Server-side sessions: the cookie holds a random token, the database only its SHA-256.
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  ip        String?
+  userAgent String?
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String     @id @default(cuid())
+  adminId   String?
+  admin     AdminUser? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action    String
+  target    String?
+  detail    Json?
+  createdAt DateTime   @default(now())
+
+  @@index([createdAt])
+}
