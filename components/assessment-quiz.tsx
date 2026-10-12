@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { BookingCard } from "@/components/booking-card";
 import { Icon } from "@/components/icons";
@@ -262,13 +261,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                   }}
                 />
                 <span>
-                  I agree to share my answers with the LifelineX clinical team so a doctor can review them before my
-                  consultation, as described in the{" "}
-                  {/* Stop the click reaching the label, which would otherwise also toggle the checkbox. */}
-                  <Link href="/privacy" target="_blank" onClick={(e) => e.stopPropagation()}>
-                    Privacy Policy
-                  </Link>
-                  .
+                  I agree to share my answers with the LifelineX clinical team so a doctor can review them before my consultation.
                 </span>
               </label>
               {consentError && <p className="form-error is-on">Please tick the box to continue.</p>}
@@ -288,7 +281,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                 </button>
                 <p className="privacy">
                   <Icon name="lock" size={14} />
-                  Used only by our clinical team to arrange your consultation — never for advertising.
+                  Used only by our clinical team to arrange your consultation.
                 </p>
               </div>
             </form>
@@ -379,12 +372,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
             <div className="quiz__foot">
               <BookingCard fee={fee} inline />
               <p className="price__fine" style={{ textAlign: "center" }}>
-                Fully credited against your plan if you continue. Non-refundable once your consultation has taken
-                place — see our{" "}
-                <Link href="/refund" target="_blank">
-                  Refund &amp; Cancellation Policy
-                </Link>
-                .
+                Fully adjusted against your plan if you continue. Non-refundable otherwise.
               </p>
             </div>
           </div>

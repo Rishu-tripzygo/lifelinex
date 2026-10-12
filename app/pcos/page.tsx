@@ -6,7 +6,7 @@ import { consultationFeeInr } from "@/lib/config";
 import { formatInr } from "@/lib/lead";
 import { Icon } from "@/components/icons";
 import { PageEffects } from "@/components/page-effects";
-import { Dock, Faq, SiteFooter, SiteNav } from "@/components/site-chrome";
+import { Dock, Faq, SiteNav, SUPPORT_EMAIL, SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from "@/components/site-chrome";
 import { faqJsonLd, JsonLd } from "@/components/json-ld";
 
 // Rendered at build time from CONSULTATION_FEE_INR; rebuild after changing it.
@@ -42,8 +42,7 @@ const STEPS = [
 const FAQ = [
   { q: "Is this a diagnosis?", a: "The online assessment itself isn't a diagnosis — it just gives your doctor context before your call. The consultation is a real medical consultation: your doctor can diagnose your condition and prescribe medication, supplements or a personalised treatment plan, and will advise if in-person testing or a specialist referral is needed." },
   { q: "What happens on the call?", a: "Your doctor reviews your assessment answers and asks follow-up questions about your history, symptoms and goals, then explains what a personalised plan would involve for you." },
-  { q: "Is the consultation fee refundable?", a: `Once your consultation has taken place the ${FEE} fee is non-refundable, including if you decide not to continue with a plan. You can cancel ahead of your slot for a full refund, and if your doctor cannot attend you choose between a new slot and a full refund — our Refund & Cancellation Policy covers every case.` },
-  { q: `What exactly does the ${FEE} cover?`, a: `It covers the review of your assessment by a doctor and your 1-on-1 consultation. If you continue with the personalised plan your doctor recommends, the full ${FEE} is credited against the cost of that plan. Diagnostic tests, products and supplements are separate, optional, and not credited.` },
+  { q: "Is the consultation fee refundable?", a: "The consultation fee is non-refundable. If you choose to go ahead with your personalised plan, the full fee is adjusted against it — no extra charge." },
   { q: "How soon do I get my plan after the call?", a: "Most plans are delivered within 2–4 hours of your consultation." },
   { q: "Is my information kept private?", a: "Yes. Your assessment answers and consultation details are used only to build your plan and are not shared outside our clinical team." },
 ];
@@ -103,8 +102,8 @@ export default function PcosPage() {
           <div className="container">
             <dl>
               <div><dt>MBBS / MD</dt><dd>Qualified doctors lead every consultation</dd></div>
-              <div><dt>1-on-1</dt><dd>A real conversation — not a call centre</dd></div>
-              <div><dt>{FEE}</dt><dd>Credited against your plan if you continue</dd></div>
+              <div><dt>1-on-1</dt><dd>A real conversation — not an influencer-made program</dd></div>
+              <div><dt>{FEE}</dt><dd>Adjusted against your plan if you continue</dd></div>
             </dl>
           </div>
         </section>
@@ -180,6 +179,7 @@ export default function PcosPage() {
             </div>
             <figure className="how__media reveal">
               <img src="/assets/consult-call.webp" alt="A woman at her dining table on a video consultation, taking notes beside a cup of chai" width={1400} height={940} loading="lazy" />
+              <figcaption>Hundreds of women have already taken this assessment.</figcaption>
             </figure>
           </div>
         </section>
@@ -209,10 +209,10 @@ export default function PcosPage() {
             <div className="doctors__intro reveal">
               <span className="eyebrow">Our doctors</span>
               <h2 className="display-l">Backed by real medical expertise</h2>
-              <p className="lede">MBBS, MD-qualified doctors specialising in hormonal and metabolic health. Your doctor&apos;s name, qualification and medical council registration number appear on your booking page before the call.</p>
+              <p className="lede">MBBS, MD-qualified doctors with years of combined clinical experience, specialising in hormonal and metabolic health.</p>
               <ul className="doctors__creds">
                 <li><Icon name="check" />MBBS, MD verified</li>
-                <li><Icon name="check" />Registration number shown before your call</li>
+                <li><Icon name="check" />5,000+ consultations completed</li>
                 <li><Icon name="check" />1-on-1, not an influencer-made program</li>
               </ul>
             </div>
@@ -246,8 +246,8 @@ export default function PcosPage() {
             <div className="pricing__copy reveal">
               <span className="eyebrow">Pricing</span>
               <h2 className="display-l">Simple, transparent pricing</h2>
-              <p className="lede">One consultation fee. It covers your assessment review and your 1-on-1 consultation, and if you continue with your personalised plan the full {FEE} is credited against it — no extra charge.</p>
-              <p className="small">Diagnostic tests, products and supplements are separate and optional; the fee is not credited against those. After you book, we email your Google Meet link for the video consultation.</p>
+              <p className="lede">One consultation fee. If you continue with your personalised plan, the full {FEE} is adjusted against it — no extra charge.</p>
+              <p className="small">After you book, we email your Google Meet link for the video consultation.</p>
             </div>
             <div className="price">
               <span className="price__label">Consultation fee</span>
@@ -255,14 +255,10 @@ export default function PcosPage() {
               <ul className="price__list">
                 <li><Icon name="check" size={16} />1-on-1 call with an MBBS/MD doctor</li>
                 <li><Icon name="check" size={16} />Personalised plan built from your history</li>
-                <li><Icon name="check" size={16} /><span><strong>Fully credited against your plan</strong> if you continue</span></li>
+                <li><Icon name="check" size={16} /><span><strong>Fully adjusted against your plan</strong> if you continue</span></li>
               </ul>
               <BookingCard fee={FEE_INR} />
-              <p className="price__fine">
-                Non-refundable once your consultation has taken place, including if you choose not to continue with a
-                plan. Cancel ahead of your slot for a full refund — see our{" "}
-                <Link href="/refund">Refund &amp; Cancellation Policy</Link>.
-              </p>
+              <p className="price__fine">Non-refundable if you choose not to continue with a plan.</p>
             </div>
           </div>
         </section>
@@ -294,13 +290,24 @@ export default function PcosPage() {
         </section>
       </main>
 
-      <SiteFooter
-        concerns={[{ label: "PCOS / PCOD", href: "/pcos" }, { label: "All health concerns", href: "/" }]}
-        links={[
-          { href: "#book", label: "Pricing" },
-          { href: "#faq", label: "FAQ" },
-        ]}
-      />
+      <footer className="footer">
+        <div className="container">
+          <div className="footer__top">
+            <Link href="/"><img src="/assets/logo-horizontal.svg" alt="LifelineX home" width={115} height={22} /></Link>
+            <nav className="footer__links" aria-label="Footer">
+              <Link href="/">All health concerns</Link>
+              <a href="#book">Pricing</a>
+              <a href="#faq">FAQ</a>
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+              <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a>
+            </nav>
+          </div>
+          <p>
+            LifelineX connects you with a licensed doctor (MBBS/MD) for an online consultation. Based on that consultation, your doctor may prescribe medication, supplements or a personalised treatment plan, with digital follow-up support. This is a telemedicine service — your doctor will advise if an in-person examination or specialist referral is needed. If you are experiencing a medical emergency, contact your local emergency services immediately.
+          </p>
+          <p>© 2026 LifelineX. All rights reserved.</p>
+        </div>
+      </footer>
 
       <Dock title="Doctor consultation" detail={`${FEE} · adjusted against your plan`} href="#assessment" label="Start" />
       <PageEffects hideDockOn="assessment,book" />
