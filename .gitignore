@@ -8,3 +8,4 @@ node_modules
 /prisma/*.db-journal
 *.tsbuildinfo
 .env*.local
+.deploy/

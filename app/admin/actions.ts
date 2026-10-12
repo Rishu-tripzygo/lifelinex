@@ -5,6 +5,7 @@ import type { BookingStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { audit, hashPassword, login, logout, passwordProblem, requireAdmin, verifyPassword } from "@/lib/admin/auth";
+import { deliverBookingConfirmation } from "@/lib/booking-delivery";
 import { prisma } from "@/lib/prisma";
 import { BookingError, bookSlot } from "@/lib/scheduling";
 import { inputToMinutes, IST_OFFSET_MS } from "@/lib/time";
@@ -102,6 +103,9 @@ export async function updateBookingAction(_: ActionState, fd: FormData): Promise
     to: { status, doctorId, meetingUrl },
     notesChanged: (booking.adminNotes ?? "") !== (adminNotes ?? ""),
   });
+  if (status === "CONFIRMED" && meetingUrl && meetingUrl !== booking.meetingUrl) {
+    void deliverBookingConfirmation(id);
+  }
   revalidatePath("/admin", "layout");
   return { ok: "Booking saved." };
 }
@@ -113,13 +117,15 @@ export async function rescheduleBookingAction(_: ActionState, fd: FormData): Pro
   if (!ID.test(id) || !startsAt) return { error: "Pick a date and time." };
   const booking = await prisma.booking.findUnique({ where: { id } });
   if (!booking) return { error: "Unknown booking." };
+  let updated;
   try {
-    await bookSlot({ orderId: booking.orderId, startsAt: startsAt.toISOString(), by: "admin", overrideCapacity: fd.get("override") === "on" });
+    updated = await bookSlot({ orderId: booking.orderId, startsAt: startsAt.toISOString(), by: "admin", overrideCapacity: fd.get("override") === "on" });
   } catch (error) {
     if (error instanceof BookingError) return { error: `${error.message} Tick “Override” to book outside open slots.` };
     throw error;
   }
   await audit(admin.id, "booking.rescheduled", id, { from: booking.startsAt.toISOString(), to: startsAt.toISOString() });
+  void deliverBookingConfirmation(updated.id, { recreateMeet: true });
   revalidatePath("/admin", "layout");
   return { ok: "Booking moved." };
 }
@@ -132,6 +138,7 @@ export async function createBookingForOrderAction(_: ActionState, fd: FormData):
   try {
     const booking = await bookSlot({ orderId, startsAt: startsAt.toISOString(), by: "admin", overrideCapacity: fd.get("override") === "on" });
     await audit(admin.id, "booking.created_by_admin", booking.id, { orderId, startsAt: startsAt.toISOString() });
+    void deliverBookingConfirmation(booking.id);
   } catch (error) {
     if (error instanceof BookingError) return { error: `${error.message} Tick “Override” to book outside open slots.` };
     throw error;

@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 import {
   formatInr,
+  isValidEmail,
   isValidName,
   isValidPhone,
+  normalizeEmail,
   LEAD_STORAGE_KEY,
   PAID_ORDER_STORAGE_KEY,
   type LeadDraft,
@@ -54,13 +56,14 @@ function loadCashfree(mode: "sandbox" | "production") {
   });
 }
 
-export function BookingCard({ fee }: { fee: number }) {
-  const [lead, setLead] = useState<LeadDraft | null>(null);
+export function BookingCard({ fee, inline = false }: { fee: number; inline?: boolean }) {
+  const [lead, setLead] = useState<LeadDraft | null>(() => (typeof window !== "undefined" ? readLead() : null));
   const [paidOrder, setPaidOrder] = useState<string | null>(null);
   const [website, setWebsite] = useState("");
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -71,6 +74,7 @@ export function BookingCard({ fee }: { fee: number }) {
       if (next) {
         setName(next.name);
         setPhone(next.phone);
+        setEmail(next.email ?? "");
         setEditing(false);
       }
     };
@@ -86,9 +90,9 @@ export function BookingCard({ fee }: { fee: number }) {
 
   async function pay() {
     setError("");
-    if (!isValidName(name) || !isValidPhone(phone)) {
+    if (!isValidName(name) || !isValidPhone(phone) || !isValidEmail(email)) {
       if (lead) setEditing(true);
-      setError("Enter your name and a valid 10-digit mobile number to pay.");
+      setError("Enter your name, email and a valid 10-digit mobile number to pay.");
       return;
     }
 
@@ -100,6 +104,7 @@ export function BookingCard({ fee }: { fee: number }) {
         body: JSON.stringify({
           name: name.trim(),
           phone: phone.trim(),
+          email: normalizeEmail(email),
           assessmentId: lead?.assessmentId,
           website,
         }),
@@ -123,10 +128,12 @@ export function BookingCard({ fee }: { fee: number }) {
     }
   }
 
+  const leadComplete = lead && isValidName(lead.name) && isValidPhone(lead.phone) && isValidEmail(lead.email ?? "");
   const showFields = !lead || editing;
+  const showEmailOnly = !!lead && !editing && isValidName(lead.name) && isValidPhone(lead.phone) && !isValidEmail(lead.email ?? "");
 
   return (
-    <div className="booking">
+    <div className={`booking${inline ? " booking--inline" : ""}`}>
       {paidOrder && (
         <a className="booking__as" href={`/booking/${encodeURIComponent(paidOrder)}`}>
           <span>
@@ -146,7 +153,7 @@ export function BookingCard({ fee }: { fee: number }) {
         onChange={(e) => setWebsite(e.target.value)}
         style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }}
       />
-      {showFields ? (
+      {showFields && !showEmailOnly ? (
         <>
           <div className="field">
             <label htmlFor="book-name">Your name</label>
@@ -169,16 +176,45 @@ export function BookingCard({ fee }: { fee: number }) {
               />
             </div>
           </div>
+          <div className="field">
+            <label htmlFor="book-email">Email</label>
+            <div className="field__control">
+              <input
+                id="book-email"
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
         </>
-      ) : (
-        <div className="booking__as">
-          <span>
-            Booking for <strong>{lead?.name}</strong>
-          </span>
-          <button type="button" onClick={() => setEditing(true)}>
-            Change
-          </button>
+      ) : showEmailOnly ? (
+        <div className="field">
+          <label htmlFor="book-email">Email</label>
+          <div className="field__control">
+            <input
+              id="book-email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
         </div>
+      ) : (
+        !inline && (
+          <div className="booking__as">
+            <span>
+              Booking for <strong>{lead?.name}</strong>
+            </span>
+            <button type="button" onClick={() => setEditing(true)}>
+              Change
+            </button>
+          </div>
+        )
       )}
 
       {error && (
@@ -196,13 +232,17 @@ export function BookingCard({ fee }: { fee: number }) {
           </>
         ) : (
           <>
-            Pay {formatInr(fee)} &amp; book <Icon name="arrow" />
+            {inline && leadComplete ? (
+              <>Pay {formatInr(fee)} &amp; pick a time <Icon name="arrow" /></>
+            ) : (
+              <>Pay {formatInr(fee)} &amp; book <Icon name="arrow" /></>
+            )}
           </>
         )}
       </button>
       <p className="booking__secure">
         <Icon name="lock" size={14} />
-        Secure checkout by Cashfree. You&apos;ll pick a consultation time after payment.
+        Secure checkout by Cashfree. You&apos;ll pick a time after payment — we&apos;ll email your Google Meet link.
       </p>
     </div>
   );

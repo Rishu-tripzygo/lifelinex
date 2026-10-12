@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { cashfreeMode, createCashfreeOrder } from "@/lib/cashfree";
 import { orderAccessToken, orderCookieOptions } from "@/lib/access";
 import { appUrl, ConfigError, consultationFeeInr, ORDER_COOKIE } from "@/lib/config";
-import { cleanName, isValidName, normalizePhone } from "@/lib/lead";
+import { cleanName, isValidEmail, isValidName, normalizeEmail, normalizePhone } from "@/lib/lead";
 import { prisma } from "@/lib/prisma";
 import { jsonError, readGuardedJson } from "@/lib/request-guard";
 
@@ -17,8 +17,9 @@ export async function POST(request: Request) {
 
   const name = typeof payload.name === "string" ? cleanName(payload.name) : "";
   const phone = typeof payload.phone === "string" ? normalizePhone(payload.phone) : null;
-  if (!isValidName(name) || !phone) {
-    return jsonError("Enter your name and a valid 10-digit mobile number.", 400);
+  const email = typeof payload.email === "string" ? normalizeEmail(payload.email) : null;
+  if (!isValidName(name) || !phone || !email || !isValidEmail(email)) {
+    return jsonError("Enter your name, email and a valid 10-digit mobile number.", 400);
   }
 
   let site: string;
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     const amount = consultationFeeInr();
     const cashfreeOrderId = `llx_${Date.now().toString(36)}_${crypto.randomBytes(4).toString("hex")}`;
     const order = await prisma.paymentOrder.create({
-      data: { cashfreeOrderId, amount, customerName: name, customerPhone: phone, assessmentId },
+      data: { cashfreeOrderId, amount, customerName: name, customerPhone: phone, customerEmail: email, assessmentId },
     });
 
     try {

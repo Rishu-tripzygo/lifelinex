@@ -111,6 +111,7 @@ export default async function BookingPage({ params }: { params: Promise<{ orderI
         <div><dt>Date</dt><dd>{formatLongDay(booking.startsAt)}</dd></div>
         <div><dt>Time</dt><dd>{formatTime(booking.startsAt)} – {formatTime(booking.endsAt)} IST</dd></div>
         <div><dt>Name</dt><dd>{order.customerName}</dd></div>
+        {order.customerEmail && <div><dt>Email</dt><dd>{order.customerEmail}</dd></div>}
         <div>
           <dt>Doctor</dt>
           <dd>
@@ -125,12 +126,19 @@ export default async function BookingPage({ params }: { params: Promise<{ orderI
         <>
           {booking.meetingUrl ? (
             <a className="btn btn--primary btn--block" href={booking.meetingUrl} target="_blank" rel="noopener noreferrer">
-              Join consultation <Icon name="arrow" />
+              Join on Google Meet <Icon name="arrow" />
             </a>
           ) : (
             <p className="booking__as" style={{ width: "100%" }}>
-              <span>Your video link will appear here before the call. Keep this page bookmarked.</span>
+              <span>
+                {order.customerEmail
+                  ? `Your Google Meet link is being set up — check ${order.customerEmail} shortly.`
+                  : "Your Google Meet link will appear here once your booking is confirmed."}
+              </span>
             </p>
+          )}
+          {order.customerEmail && booking.meetingUrl && (
+            <p className="small">We also emailed this Google Meet link to {order.customerEmail}.</p>
           )}
           <div className="status__actions">
             <a className="btn btn--dark" href={`/api/bookings/ics?order_id=${encodeURIComponent(orderId)}`}>

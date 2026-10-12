@@ -22,7 +22,7 @@ export const QUESTIONS: Record<number, { title: string; cols?: 2; options: [stri
     ],
   },
   3: {
-    title: "Has a doctor ever mentioned PCOS, PCOD or PMOS to you before?",
+    title: "Has a doctor ever mentioned PCOS or PCOD to you before?",
     options: [
       ["confirmed", "Yes, I'm diagnosed"],
       ["suspected", "It was suspected, but never confirmed"],

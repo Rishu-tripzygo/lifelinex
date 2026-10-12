@@ -1,0 +1,38 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-lifelinex
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            APP_DIR="/var/www/lifelinex"
+            mkdir -p "$APP_DIR"
+
+            if [ ! -d "$APP_DIR/.git" ]; then
+              git clone --depth 1 https://github.com/Rishu-tripzygo/lifelinex.git "$APP_DIR"
+            fi
+
+            cd "$APP_DIR"
+            git fetch origin main
+            git reset --hard origin/main
+
+            chmod +x deploy/deploy.sh
+            ./deploy/deploy.sh

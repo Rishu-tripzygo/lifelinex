@@ -6,19 +6,21 @@ import { consultationFeeInr } from "@/lib/config";
 import { formatInr } from "@/lib/lead";
 import { Icon } from "@/components/icons";
 import { PageEffects } from "@/components/page-effects";
-import { Dock, Faq, SiteNav } from "@/components/site-chrome";
+import { Dock, Faq, SiteFooter, SiteNav } from "@/components/site-chrome";
+import { faqJsonLd, JsonLd } from "@/components/json-ld";
 
 // Rendered at build time from CONSULTATION_FEE_INR; rebuild after changing it.
 const FEE_INR = consultationFeeInr();
 const FEE = formatInr(FEE_INR);
 
 export const metadata: Metadata = {
-  title: "PCOS/PCOD/PMOS Consultation",
+  title: "PCOS & PCOD Consultation",
   description:
-    "A 1-on-1 consultation with an MBBS/MD doctor and a plan personalised to your PCOS, PCOD or PMOS history. Take the free 2-minute assessment.",
+    "A 1-on-1 consultation with an MBBS/MD doctor and a plan personalised to your PCOS or PCOD history. Take the free 2-minute assessment.",
+  alternates: { canonical: "/pcos" },
   openGraph: {
-    title: "PCOS/PCOD/PMOS Consultation — LifelineX",
-    description: "Doctor-led, personalised PCOS, PCOD & PMOS care. Take the free 2-minute assessment.",
+    title: "PCOS & PCOD Consultation — LifelineX",
+    description: "Doctor-led, personalised PCOS and PCOD care. Take the free 2-minute assessment.",
     images: ["/assets/hero-conversation.jpg"],
   },
 };
@@ -40,7 +42,8 @@ const STEPS = [
 const FAQ = [
   { q: "Is this a diagnosis?", a: "The online assessment itself isn't a diagnosis — it just gives your doctor context before your call. The consultation is a real medical consultation: your doctor can diagnose your condition and prescribe medication, supplements or a personalised treatment plan, and will advise if in-person testing or a specialist referral is needed." },
   { q: "What happens on the call?", a: "Your doctor reviews your assessment answers and asks follow-up questions about your history, symptoms and goals, then explains what a personalised plan would involve for you." },
-  { q: "Is the consultation fee refundable?", a: "The consultation fee is non-refundable. If you choose to go ahead with your personalised plan, the full fee is adjusted against it — no extra charge." },
+  { q: "Is the consultation fee refundable?", a: `Once your consultation has taken place the ${FEE} fee is non-refundable, including if you decide not to continue with a plan. You can cancel ahead of your slot for a full refund, and if your doctor cannot attend you choose between a new slot and a full refund — our Refund & Cancellation Policy covers every case.` },
+  { q: `What exactly does the ${FEE} cover?`, a: `It covers the review of your assessment by a doctor and your 1-on-1 consultation. If you continue with the personalised plan your doctor recommends, the full ${FEE} is credited against the cost of that plan. Diagnostic tests, products and supplements are separate, optional, and not credited.` },
   { q: "How soon do I get my plan after the call?", a: "Most plans are delivered within 2–4 hours of your consultation." },
   { q: "Is my information kept private?", a: "Yes. Your assessment answers and consultation details are used only to build your plan and are not shared outside our clinical team." },
 ];
@@ -62,9 +65,9 @@ export default function PcosPage() {
         <section className="hero" id="top">
           <div className="container hero__grid">
             <div className="hero__copy">
-              <span className="eyebrow">PCOS · PCOD · PMOS care</span>
+              <span className="eyebrow">PCOS · PCOD care</span>
               <h1 className="display-xl">
-                A doctor-led, personal path to understanding <em className="accent">your</em> PCOS, PCOD &amp; PMOS
+                A doctor-led, personal path to understanding <em className="accent">your</em> PCOS &amp; PCOD
               </h1>
               <p className="lede">
                 A 1-on-1 consultation with an MBBS/MD doctor, followed by a plan personalised to your history — not a generic chart everyone else got too.
@@ -84,7 +87,7 @@ export default function PcosPage() {
               </ul>
             </div>
             <figure className="hero__media">
-              <img src="/assets/hero-conversation.jpg" alt="Two women walking together outdoors, in conversation" width={1400} height={933} fetchPriority="high" />
+              <img src="/assets/hero-conversation.webp" alt="Two women walking together outdoors, in conversation" width={1400} height={933} fetchPriority="high" />
               <div className="hero__note">
                 <span className="hero__note-mark"><Icon name="clock" /></span>
                 <p>
@@ -101,7 +104,7 @@ export default function PcosPage() {
             <dl>
               <div><dt>MBBS / MD</dt><dd>Qualified doctors lead every consultation</dd></div>
               <div><dt>1-on-1</dt><dd>A real conversation — not a call centre</dd></div>
-              <div><dt>{FEE}</dt><dd>Adjusted against your plan if you continue</dd></div>
+              <div><dt>{FEE}</dt><dd>Credited against your plan if you continue</dd></div>
             </dl>
           </div>
         </section>
@@ -112,7 +115,7 @@ export default function PcosPage() {
               <span className="eyebrow">Sound familiar?</span>
               <h2 className="display-l">You&apos;ve probably heard this before…</h2>
               <p className="lede">
-                Many people looking for PCOS, PCOD or PMOS support say the same thing: the advice they get doesn&apos;t fit their actual life, history, or body.
+                Many people looking for PCOS or PCOD support say the same thing: the advice they get doesn&apos;t fit their actual life, history, or body.
               </p>
             </div>
             <ol className="heard__list" id="heard-list">
@@ -151,7 +154,7 @@ export default function PcosPage() {
               ))}
             </div>
             <p className="compare__foot reveal">
-              PCOS, PCOD and PMOS show up differently for everyone — irregular cycles, skin changes, weight shifts, fertility concerns, or all of the above. A plan that ignores that isn&apos;t really a plan. That&apos;s why we start with a conversation, not a checklist.
+              PCOS and PCOD show up differently for everyone — irregular cycles, skin changes, weight shifts, fertility concerns, or all of the above. A plan that ignores that isn&apos;t really a plan. That&apos;s why we start with a conversation, not a checklist.
             </p>
           </div>
         </section>
@@ -176,8 +179,7 @@ export default function PcosPage() {
               </ol>
             </div>
             <figure className="how__media reveal">
-              <img src="/assets/consult-call.jpg" alt="A woman at her dining table on a video consultation, taking notes beside a cup of chai" width={1400} height={940} loading="lazy" />
-              <figcaption>Hundreds of women have already taken this assessment.</figcaption>
+              <img src="/assets/consult-call.webp" alt="A woman at her dining table on a video consultation, taking notes beside a cup of chai" width={1400} height={940} loading="lazy" />
             </figure>
           </div>
         </section>
@@ -191,7 +193,7 @@ export default function PcosPage() {
               <ul className="assess__topics" aria-label="Topics covered">
                 <li>Cycle</li><li>Symptoms</li><li>History</li><li>Goals</li><li>Energy &amp; sleep</li>
               </ul>
-              <img className="assess__img" src="/assets/planner.jpg" alt="Hands marking days in a paper planner beside a glass of water" width={960} height={1200} loading="lazy" />
+              <img className="assess__img" src="/assets/planner.webp" alt="Hands marking days in a paper planner beside a glass of water" width={960} height={1200} loading="lazy" />
             </aside>
             <div>
               <AssessmentQuiz fee={FEE_INR} />
@@ -207,11 +209,11 @@ export default function PcosPage() {
             <div className="doctors__intro reveal">
               <span className="eyebrow">Our doctors</span>
               <h2 className="display-l">Backed by real medical expertise</h2>
-              <p className="lede">MBBS, MD-qualified doctors with years of combined clinical experience, specialising in hormonal and metabolic health.</p>
+              <p className="lede">MBBS, MD-qualified doctors specialising in hormonal and metabolic health. Your doctor&apos;s name, qualification and medical council registration number appear on your booking page before the call.</p>
               <ul className="doctors__creds">
                 <li><Icon name="check" />MBBS, MD verified</li>
-                <li><Icon name="check" />5,000+ consultations completed</li>
-                <li><Icon name="check" />1-on-1, not a call centre</li>
+                <li><Icon name="check" />Registration number shown before your call</li>
+                <li><Icon name="check" />1-on-1, not an influencer-made program</li>
               </ul>
             </div>
             <figure className="pullquote reveal">
@@ -225,7 +227,7 @@ export default function PcosPage() {
         <section className="section expect">
           <div className="container expect__grid">
             <figure className="expect__media reveal">
-              <img src="/assets/hero-kitchen.jpg" alt="Woman preparing fresh vegetables in her kitchen" width={1400} height={933} loading="lazy" />
+              <img src="/assets/hero-kitchen.webp" alt="Woman preparing fresh vegetables in her kitchen" width={1400} height={933} loading="lazy" />
             </figure>
             <div className="expect__copy reveal">
               <span className="eyebrow">Your consultation</span>
@@ -244,14 +246,8 @@ export default function PcosPage() {
             <div className="pricing__copy reveal">
               <span className="eyebrow">Pricing</span>
               <h2 className="display-l">Simple, transparent pricing</h2>
-              <p className="lede">One consultation fee. If you continue with your personalised plan, the full {FEE} is adjusted against it — no extra charge.</p>
-              <div className="bonus">
-                <span className="bonus__icon"><Icon name="book" /></span>
-                <div>
-                  <strong>Bonus: our full PCOS / PCOD / PMOS guide, free</strong>
-                  <p>Complete your booking and we&apos;ll send you our 33-page guide alongside your consultation.</p>
-                </div>
-              </div>
+              <p className="lede">One consultation fee. It covers your assessment review and your 1-on-1 consultation, and if you continue with your personalised plan the full {FEE} is credited against it — no extra charge.</p>
+              <p className="small">Diagnostic tests, products and supplements are separate and optional; the fee is not credited against those. After you book, we email your Google Meet link for the video consultation.</p>
             </div>
             <div className="price">
               <span className="price__label">Consultation fee</span>
@@ -259,10 +255,14 @@ export default function PcosPage() {
               <ul className="price__list">
                 <li><Icon name="check" size={16} />1-on-1 call with an MBBS/MD doctor</li>
                 <li><Icon name="check" size={16} />Personalised plan built from your history</li>
-                <li><Icon name="check" size={16} /><span><strong>Fully adjusted against your plan</strong> if you continue</span></li>
+                <li><Icon name="check" size={16} /><span><strong>Fully credited against your plan</strong> if you continue</span></li>
               </ul>
               <BookingCard fee={FEE_INR} />
-              <p className="price__fine">Non-refundable if you choose not to continue with a plan.</p>
+              <p className="price__fine">
+                Non-refundable once your consultation has taken place, including if you choose not to continue with a
+                plan. Cancel ahead of your slot for a full refund — see our{" "}
+                <Link href="/refund">Refund &amp; Cancellation Policy</Link>.
+              </p>
             </div>
           </div>
         </section>
@@ -276,6 +276,7 @@ export default function PcosPage() {
             </div>
             <Faq items={FAQ} />
           </div>
+          <JsonLd data={faqJsonLd(FAQ)} />
         </section>
 
         <section className="section--tight on-night final">
@@ -293,22 +294,13 @@ export default function PcosPage() {
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="container">
-          <div className="footer__top">
-            <Link href="/"><img src="/assets/logo-horizontal.svg" alt="LifelineX home" width={115} height={22} /></Link>
-            <nav className="footer__links" aria-label="Footer">
-              <Link href="/">All health concerns</Link>
-              <a href="#book">Pricing</a>
-              <a href="#faq">FAQ</a>
-            </nav>
-          </div>
-          <p>
-            LifelineX connects you with a licensed doctor (MBBS/MD) for an online consultation. Based on that consultation, your doctor may prescribe medication, supplements or a personalised treatment plan, with digital follow-up support. This is a telemedicine service — your doctor will advise if an in-person examination or specialist referral is needed. If you are experiencing a medical emergency, contact your local emergency services immediately.
-          </p>
-          <p>© 2026 LifelineX. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter
+        concerns={[{ label: "PCOS / PCOD", href: "/pcos" }, { label: "All health concerns", href: "/" }]}
+        links={[
+          { href: "#book", label: "Pricing" },
+          { href: "#faq", label: "FAQ" },
+        ]}
+      />
 
       <Dock title="Doctor consultation" detail={`${FEE} · adjusted against your plan`} href="#assessment" label="Start" />
       <PageEffects hideDockOn="assessment,book" />

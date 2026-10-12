@@ -31,7 +31,17 @@ export type LeadDraft = {
   assessmentId?: string;
   name: string;
   phone: string;
+  email?: string;
 };
+
+export function normalizeEmail(value: string) {
+  const email = value.trim().toLowerCase().slice(0, 200);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null;
+}
+
+export function isValidEmail(value: string) {
+  return normalizeEmail(value) !== null;
+}
 
 export function digitsOnly(value: string) {
   return value.replace(/\D/g, "");

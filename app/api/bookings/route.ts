@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { hasOrderAccess } from "@/lib/access";
+import { deliverBookingConfirmation } from "@/lib/booking-delivery";
 import { notifyTeam } from "@/lib/notify";
 import { ORDER_ID_PATTERN } from "@/lib/payments";
 import { prisma } from "@/lib/prisma";
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
           ? `Rescheduled: ${order.customerName} moved from ${formatDateTime(before)} to ${formatDateTime(booking.startsAt)} IST. Order ${orderId}.`
           : `New booking: ${order.customerName} (+91 ${order.customerPhone}) on ${formatDateTime(booking.startsAt)} IST. Order ${orderId}.`,
       );
+      void deliverBookingConfirmation(booking.id, { recreateMeet: !!before });
     }
     return NextResponse.json({ startsAt: booking.startsAt.toISOString(), endsAt: booking.endsAt.toISOString() });
   } catch (error) {

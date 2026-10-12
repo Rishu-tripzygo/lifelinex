@@ -1,13 +1,19 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { consultationFeeInr } from "@/lib/config";
 import { formatInr } from "@/lib/lead";
 import { Icon, type IconName } from "@/components/icons";
 import { PageEffects } from "@/components/page-effects";
-import { DISCLAIMER, Dock, Faq, SiteNav } from "@/components/site-chrome";
+import { Dock, Faq, SiteFooter, SiteNav } from "@/components/site-chrome";
+import { faqJsonLd, JsonLd } from "@/components/json-ld";
 
 // Rendered at build time from CONSULTATION_FEE_INR; rebuild after changing it.
 const FEE_INR = consultationFeeInr();
 const FEE = formatInr(FEE_INR);
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 type Concern = { title: string; desc: string; icon: IconName; href?: string };
 
@@ -15,7 +21,7 @@ const GROUPS: { label: string; items: Concern[] }[] = [
   {
     label: "Women's & hormonal health",
     items: [
-      { title: "PCOS / PCOD / PMOS", desc: "Irregular cycles, hormonal symptoms and related concerns.", icon: "cycle", href: "/pcos" },
+      { title: "PCOS / PCOD", desc: "Irregular cycles, hormonal symptoms and related concerns.", icon: "cycle", href: "/pcos" },
       { title: "Thyroid health", desc: "Fatigue, weight shifts and metabolism-related symptoms.", icon: "thyroid" },
       { title: "Fertility-related health", desc: "Support for conception planning and related concerns.", icon: "heart" },
     ],
@@ -54,12 +60,15 @@ const WHY = [
 const FAQ = [
   { q: "What is LifelineX?", a: "LifelineX is a doctor-led online platform that helps you understand a health concern, consult a qualified doctor, and decide on an appropriate next step." },
   { q: "How does the online consultation work?", a: "After your assessment, you pay the consultation fee and book a time online. You'll then be connected with a qualified doctor for your consultation." },
-  { q: `What is included in the ${FEE} consultation?`, a: `The ${FEE} fee covers your assessment review and a 1-on-1 consultation with a qualified doctor.` },
-  { q: `Are diagnostic tests included in ${FEE}?`, a: "No. If your doctor recommends diagnostic tests, these are arranged and charged separately." },
-  { q: "Are protocols or products included in the consultation price?", a: "No. Any recommended protocol, product or supplement is offered separately, and only if relevant to you." },
+  { q: `What is included in the ${FEE} consultation?`, a: `The ${FEE} fee covers your assessment review and a 1-on-1 consultation with a qualified doctor. If you then choose to continue with the personalised plan your doctor recommends, the full ${FEE} is credited against the cost of that plan — you don't pay it twice.` },
+  { q: `Are diagnostic tests included in ${FEE}?`, a: "No. If your doctor recommends diagnostic tests, these are arranged and charged separately, and the consultation fee is not credited against them." },
+  { q: "Are protocols or products included in the consultation price?", a: "No. Any recommended product or supplement is offered separately, and only if relevant to you. The consultation fee is credited against your personalised plan if you continue with it — not against products or tests." },
+  // Deliberately no cancellation window here: /refund quotes the live booking rules,
+  // so a number repeated in this FAQ would drift when an admin changes them.
+  { q: `Can I get the ${FEE} back?`, a: "Yes, if you cancel far enough ahead of your slot — the window is set out in our Refund & Cancellation Policy. After the consultation has taken place the fee is non-refundable. If your doctor cannot attend, you choose between a new slot and a full refund." },
   { q: "How is a doctor assigned?", a: "Doctors are assigned based on availability and the health concern you've chosen. All LifelineX doctors are qualified (MBBS/MD)." },
   { q: "Can I choose not to purchase a protocol?", a: "Yes. The consultation gives you your doctor's recommendations — deciding whether to proceed with anything further is entirely up to you." },
-  { q: "How will I receive my consultation recommendations?", a: "Your doctor shares recommendations with you directly after your consultation, along with any suggested next steps." },
+  { q: "How do I join my consultation?", a: "After you book a time, we email you a Google Meet link for your video call. You can also join from your booking page." },
   { q: "Is LifelineX suitable for emergencies?", a: "No. LifelineX is not an emergency service." },
   { q: "What should I do if I need urgent medical attention?", a: "Please contact your local emergency services or visit the nearest hospital immediately. Do not wait for an online consultation." },
 ];
@@ -134,7 +143,7 @@ export default function HomePage() {
             </div>
             <figure className="hero__media">
               <img
-                src="/assets/consult-call.jpg"
+                src="/assets/consult-call.webp"
                 alt="A woman at her dining table on a video consultation, taking notes beside a cup of chai"
                 width={1400}
                 height={940}
@@ -218,7 +227,7 @@ export default function HomePage() {
         <section className="section faq" style={{ borderTop: 0 }}>
           <div className="container expect__grid">
             <figure className="expect__media reveal">
-              <img src="/assets/planner.jpg" alt="Hands marking days in a paper planner beside a glass of water" width={960} height={1200} loading="lazy" style={{ aspectRatio: "4/5", objectPosition: "center 70%" }} />
+              <img src="/assets/planner.webp" alt="Hands marking days in a paper planner beside a glass of water" width={960} height={1200} loading="lazy" style={{ aspectRatio: "4/5", objectPosition: "center 70%" }} />
             </figure>
             <div className="expect__copy reveal">
               <span className="eyebrow">After your consultation</span>
@@ -245,16 +254,16 @@ export default function HomePage() {
               </p>
               <ul className="doctors__creds">
                 <li><Icon name="check" />MBBS / MD verified</li>
-                <li><Icon name="check" />1-on-1 — not a call centre</li>
+                <li><Icon name="check" />1-on-1 — not an influencer-made program</li>
                 <li><Icon name="check" />Matched to your concern</li>
               </ul>
             </div>
             <div className="assigned reveal">
               <span className="assigned__icon"><Icon name="steth" /></span>
               <div>
-                <strong>Meet your assigned doctor after booking</strong>
+                <strong>Google Meet link emailed after booking</strong>
                 <p>
-                  Once you book your consultation, you&apos;ll be matched with a qualified doctor suited to your concern. Their name, qualification and registration details are shared with you ahead of your call.
+                  Once you pick a consultation time, we create your Google Meet room and email you the join link. Your doctor&apos;s name, qualification and medical council registration number are shown on your booking page before the call.
                 </p>
               </div>
             </div>
@@ -268,7 +277,7 @@ export default function HomePage() {
               <h2 className="display-l">Built around your privacy and your choice</h2>
             </div>
             <ul className="ticks reveal" style={{ gap: "var(--space-4)", paddingTop: "var(--space-3)" }}>
-              <li><Icon name="lock" size={16} />Your assessment answers are kept private and used only to inform your consultation.</li>
+              <li><Icon name="lock" size={16} />Your assessment answers are kept private and used only to inform your consultation — see our <Link href="/privacy">Privacy Policy</Link>.</li>
               <li><Icon name="check" size={16} />Consultation pricing is shown upfront — {FEE}, nothing hidden.</li>
               <li><Icon name="check" size={16} />You are never automatically enrolled into a protocol or subscription.</li>
               <li><Icon name="check" size={16} />Every additional purchase — diagnostics, protocol or support — is your choice.</li>
@@ -285,6 +294,7 @@ export default function HomePage() {
             </div>
             <Faq items={FAQ} />
           </div>
+          <JsonLd data={faqJsonLd(FAQ)} />
         </section>
 
         <section className="section--tight on-night final">
@@ -302,45 +312,14 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="container">
-          <div className="footer__cols">
-            <div className="footer__brand">
-              <img src="/assets/logo-horizontal.svg" alt="LifelineX" width={115} height={22} />
-              <p>{DISCLAIMER}</p>
-            </div>
-            <div>
-              <h3>Health concerns</h3>
-              <ul>
-                <li><Link href="/pcos">PCOS / PCOD / PMOS</Link></li>
-                <li className="soon">Thyroid health — coming soon</li>
-                <li className="soon">Weight &amp; metabolic — coming soon</li>
-                <li className="soon">More concerns — coming soon</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Company</h3>
-              <ul>
-                <li className="soon">About LifelineX [add link]</li>
-                <li className="soon">Contact [add details]</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Legal</h3>
-              <ul>
-                <li className="soon">Privacy Policy [add link]</li>
-                <li className="soon">Terms &amp; Conditions [add link]</li>
-                <li className="soon">Cancellation &amp; Refund Policy [add link]</li>
-                <li className="soon">Teleconsultation Information [add link]</li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer__base">
-            <p>© 2026 LifelineX. All rights reserved.</p>
-            <p>[Social links to be added]</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter
+        concerns={[
+          { label: "PCOS / PCOD", href: "/pcos" },
+          { label: "Thyroid health — coming soon" },
+          { label: "Weight & metabolic — coming soon" },
+          { label: "More concerns — coming soon" },
+        ]}
+      />
 
       <Dock title="Doctor-led consultation" detail={`${FEE} · starts with a free assessment`} href="#concerns" label="Choose" />
       <PageEffects hideDockOn="concerns" />

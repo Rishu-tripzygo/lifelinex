@@ -1,9 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { BookingCard } from "@/components/booking-card";
 import { Icon } from "@/components/icons";
 import { labelFor, QUESTIONS, SYMPTOMS } from "@/lib/assessment-questions";
-import { cleanName, formatInr, isValidName, isValidPhone, LEAD_STORAGE_KEY, type LeadDraft } from "@/lib/lead";
+import {
+  cleanName,
+  isValidEmail,
+  isValidName,
+  isValidPhone,
+  LEAD_STORAGE_KEY,
+  normalizeEmail,
+  type LeadDraft,
+} from "@/lib/lead";
 
 // Steps: 0 details, 1 single, 2 symptoms (multi), 3–10 single, 11 result.
 const RESULT_STEP = 11;
@@ -19,8 +29,10 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
   const [back, setBack] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [consent, setConsent] = useState(false);
   const [consentError, setConsentError] = useState(false);
   const [website, setWebsite] = useState("");
@@ -33,6 +45,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const consentRef = useRef<HTMLInputElement>(null);
   const moved = useRef(false);
   const timer = useRef<number | undefined>(undefined);
@@ -61,11 +74,14 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
     event.preventDefault();
     const nameOk = isValidName(name);
     const phoneOk = isValidPhone(phone);
+    const emailOk = isValidEmail(email);
     setNameError(!nameOk);
     setPhoneError(!phoneOk);
+    setEmailError(!emailOk);
     setConsentError(!consent);
     if (!nameOk) return nameRef.current?.focus();
     if (!phoneOk) return phoneRef.current?.focus();
+    if (!emailOk) return emailRef.current?.focus();
     if (!consent) return consentRef.current?.focus();
     go(1);
   }
@@ -101,7 +117,11 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
 
   async function finish(nextAnswers: Record<string, string>, nextSymptoms: string[]) {
     go(RESULT_STEP);
-    const lead: LeadDraft = { name: cleanName(name), phone: phone.trim() };
+    const lead: LeadDraft = {
+      name: cleanName(name),
+      phone: phone.trim(),
+      email: normalizeEmail(email) ?? undefined,
+    };
     publishLead(lead);
     try {
       const response = await fetch("/api/assessments", {
@@ -212,6 +232,25 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                 </div>
                 <span className="field__error">Please enter a valid 10-digit mobile number.</span>
               </div>
+              <div className={`field${emailError ? " is-invalid" : ""}`}>
+                <label htmlFor="quiz-email">Email</label>
+                <div className="field__control">
+                  <input
+                    id="quiz-email"
+                    ref={emailRef}
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    aria-invalid={emailError}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setEmailError(false);
+                    }}
+                  />
+                </div>
+                <span className="field__error">Please enter a valid email address.</span>
+              </div>
               <label className={`consent${consentError ? " is-invalid" : ""}`}>
                 <input
                   ref={consentRef}
@@ -223,7 +262,13 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                   }}
                 />
                 <span>
-                  I agree to share my answers with the LifelineX clinical team so a doctor can review them before my consultation.
+                  I agree to share my answers with the LifelineX clinical team so a doctor can review them before my
+                  consultation, as described in the{" "}
+                  {/* Stop the click reaching the label, which would otherwise also toggle the checkbox. */}
+                  <Link href="/privacy" target="_blank" onClick={(e) => e.stopPropagation()}>
+                    Privacy Policy
+                  </Link>
+                  .
                 </span>
               </label>
               {consentError && <p className="form-error is-on">Please tick the box to continue.</p>}
@@ -243,7 +288,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                 </button>
                 <p className="privacy">
                   <Icon name="lock" size={14} />
-                  Used only by our clinical team to arrange your consultation.
+                  Used only by our clinical team to arrange your consultation — never for advertising.
                 </p>
               </div>
             </form>
@@ -331,21 +376,15 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                 ))}
               </dl>
             )}
-            <div className="bonus">
-              <span className="bonus__icon">
-                <Icon name="book" />
-              </span>
-              <div>
-                <strong>Bonus: our full PCOS / PCOD / PMOS guide, free</strong>
-                <p>Complete your booking and we&apos;ll send you our 33-page guide alongside your consultation — no extra cost.</p>
-              </div>
-            </div>
             <div className="quiz__foot">
-              <a href="#book" className="btn btn--primary btn--block">
-                Continue to book — {formatInr(fee)} <Icon name="arrow" />
-              </a>
+              <BookingCard fee={fee} inline />
               <p className="price__fine" style={{ textAlign: "center" }}>
-                Fully adjusted against your plan if you continue. Non-refundable otherwise.
+                Fully credited against your plan if you continue. Non-refundable once your consultation has taken
+                place — see our{" "}
+                <Link href="/refund" target="_blank">
+                  Refund &amp; Cancellation Policy
+                </Link>
+                .
               </p>
             </div>
           </div>
