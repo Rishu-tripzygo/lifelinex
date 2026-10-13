@@ -36,6 +36,7 @@ export function Analytics() {
     if (previousPath.current && previousPath.current !== pathname) {
       window.dataLayer ??= [];
       window.dataLayer.push({ event: "virtual_page_view", page_type: pageType(pathname) });
+      window.fbq?.("track", "PageView");
     }
     previousPath.current = pathname;
   }, [pathname]);
