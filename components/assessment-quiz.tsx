@@ -133,6 +133,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
         body: JSON.stringify({
           name: lead.name,
           phone: lead.phone,
+          email: lead.email,
           answers: nextAnswers,
           symptoms: nextSymptoms,
           consent,

@@ -6,7 +6,7 @@ import { consultationFeeInr } from "@/lib/config";
 import { formatInr } from "@/lib/lead";
 import { Icon } from "@/components/icons";
 import { PageEffects } from "@/components/page-effects";
-import { Dock, Faq, SiteNav, SUPPORT_EMAIL, SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from "@/components/site-chrome";
+import { Dock, Faq, LEGAL_NAME, SiteNav, SUPPORT_EMAIL, SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from "@/components/site-chrome";
 import { faqJsonLd, JsonLd } from "@/components/json-ld";
 
 // Rendered at build time from CONSULTATION_FEE_INR; rebuild after changing it.
@@ -305,7 +305,7 @@ export default function PcosPage() {
           <p>
             LifelineX connects you with a licensed doctor (MBBS/MD) for an online consultation. Based on that consultation, your doctor may prescribe medication, supplements or a personalised treatment plan, with digital follow-up support. This is a telemedicine service — your doctor will advise if an in-person examination or specialist referral is needed. If you are experiencing a medical emergency, contact your local emergency services immediately.
           </p>
-          <p>© 2026 LifelineX. All rights reserved.</p>
+          <p>© 2026 LifelineX. Operated by {LEGAL_NAME}. All rights reserved.</p>
         </div>
       </footer>
 

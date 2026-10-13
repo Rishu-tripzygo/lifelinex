@@ -3,6 +3,7 @@ set -euo pipefail
 
 APP_DIR="/var/www/lifelinex"
 cd "$APP_DIR"
+export PATH="/root/.nvm/versions/node/v20.20.2/bin:$PATH"
 
 if [ ! -f .env ]; then
   echo "ERROR: .env not found on server. Create /var/www/lifelinex/.env before deploying."

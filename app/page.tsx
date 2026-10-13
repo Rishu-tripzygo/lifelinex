@@ -9,6 +9,7 @@ import {
   Dock,
   Faq,
   SiteNav,
+  LEGAL_NAME,
   SUPPORT_EMAIL,
   SUPPORT_PHONE_DISPLAY,
   SUPPORT_PHONE_HREF,
@@ -343,7 +344,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="footer__base">
-            <p>© 2026 LifelineX. All rights reserved.</p>
+            <p>© 2026 LifelineX. Operated by {LEGAL_NAME}. All rights reserved.</p>
             <p><a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> · <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a></p>
           </div>
         </div>
