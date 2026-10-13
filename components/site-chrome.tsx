@@ -78,6 +78,8 @@ export const DISCLAIMER =
 
 // Published support contact. Shown in the footer of every page so there is always a
 // way to reach a human — payment gateways and India's telemedicine rules expect one.
+// Legal name of the business owner, as registered with the payment gateway.
+export const LEGAL_NAME = "Nitin Rana";
 export const SUPPORT_EMAIL = "lifelinex.doctor@gmail.com";
 export const SUPPORT_PHONE_DISPLAY = "+91 73037 81212";
 export const SUPPORT_PHONE_HREF = "tel:+917303781212";
