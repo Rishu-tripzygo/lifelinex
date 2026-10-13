@@ -4,6 +4,52 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/client-analytics";
 
+const GTM_ID = "GTM-WRLBSPL6";
+const META_PIXEL_ID = "1427268639381222";
+
+type FacebookQueue = ((...args: unknown[]) => void) & {
+  callMethod?: (...args: unknown[]) => void;
+  queue: unknown[][];
+  push: FacebookQueue;
+  loaded: boolean;
+  version: string;
+};
+
+function initialiseTracking() {
+  document.documentElement.classList.remove("no-js");
+
+  window.dataLayer ??= [];
+  if (!document.getElementById("lifelinex-gtm")) {
+    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    const gtm = document.createElement("script");
+    gtm.id = "lifelinex-gtm";
+    gtm.async = true;
+    gtm.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+    document.head.appendChild(gtm);
+  }
+
+  if (typeof window.fbq !== "function") {
+    const fbq = function (...args: unknown[]) {
+      if (fbq.callMethod) fbq.callMethod(...args);
+      else fbq.queue.push(args);
+    } as FacebookQueue;
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = "2.0";
+    fbq.queue = [];
+    window.fbq = fbq;
+    (window as Window & { _fbq?: FacebookQueue })._fbq = fbq;
+
+    const meta = document.createElement("script");
+    meta.id = "lifelinex-meta-pixel";
+    meta.async = true;
+    meta.src = "https://connect.facebook.net/en_US/fbevents.js";
+    document.head.appendChild(meta);
+    window.fbq("init", META_PIXEL_ID);
+    window.fbq("track", "PageView");
+  }
+}
+
 function pageType(pathname: string) {
   if (pathname === "/") return "home";
   if (pathname.startsWith("/booking/")) return "booking";
@@ -32,6 +78,8 @@ export function Analytics() {
   useEffect(() => {
     // The admin area contains patient records and must never load analytics.
     if (pathname.startsWith("/admin")) return;
+
+    initialiseTracking();
 
     if (previousPath.current && previousPath.current !== pathname) {
       window.dataLayer ??= [];
