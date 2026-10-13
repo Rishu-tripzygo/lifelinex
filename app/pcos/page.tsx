@@ -103,7 +103,7 @@ export default function PcosPage() {
             <dl>
               <div><dt>MBBS / MD</dt><dd>Qualified doctors lead every consultation</dd></div>
               <div><dt>1-on-1</dt><dd>A real conversation — not an influencer-made program</dd></div>
-              <div><dt>{FEE}</dt><dd>Adjusted against your plan if you continue</dd></div>
+              <div><dt>{FEE}</dt><dd>One-time consultation fee</dd></div>
             </dl>
           </div>
         </section>
@@ -309,7 +309,7 @@ export default function PcosPage() {
         </div>
       </footer>
 
-      <Dock title="Doctor consultation" detail={`${FEE} · adjusted against your plan`} href="#assessment" label="Start" />
+      <Dock title="Doctor consultation" detail={FEE} href="#assessment" label="Start" />
       <PageEffects hideDockOn="assessment,book" />
     </>
   );
