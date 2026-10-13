@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 import {
   formatInr,
+  formatPhoneInput,
   isValidEmail,
   isValidName,
   isValidPhone,
@@ -90,7 +91,9 @@ export function BookingCard({ fee, inline = false }: { fee: number; inline?: boo
 
   async function pay() {
     setError("");
-    if (!isValidName(name) || !isValidPhone(phone) || !isValidEmail(email)) {
+    const phoneFormatted = formatPhoneInput(phone);
+    if (phoneFormatted !== phone) setPhone(phoneFormatted);
+    if (!isValidName(name) || !isValidPhone(phoneFormatted) || !isValidEmail(email)) {
       if (lead) setEditing(true);
       setError("Enter your name, email and a valid 10-digit mobile number to pay.");
       return;
@@ -103,7 +106,7 @@ export function BookingCard({ fee, inline = false }: { fee: number; inline?: boo
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
-          phone: phone.trim(),
+          phone: phoneFormatted,
           email: normalizeEmail(email),
           assessmentId: lead?.assessmentId,
           website,
@@ -168,11 +171,17 @@ export function BookingCard({ fee, inline = false }: { fee: number; inline?: boo
               <input
                 id="book-phone"
                 type="tel"
-                inputMode="tel"
+                inputMode="numeric"
                 autoComplete="tel-national"
                 placeholder="98765 43210"
+                maxLength={10}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
+                onInput={(e) => setPhone(formatPhoneInput(e.currentTarget.value))}
+                onBlur={(e) => {
+                  const next = formatPhoneInput(e.target.value);
+                  if (next !== phone) setPhone(next);
+                }}
               />
             </div>
           </div>

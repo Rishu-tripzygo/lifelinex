@@ -6,11 +6,13 @@ import { Icon } from "@/components/icons";
 import { labelFor, QUESTIONS, SYMPTOMS } from "@/lib/assessment-questions";
 import {
   cleanName,
+  formatPhoneInput,
   isValidEmail,
   isValidName,
   isValidPhone,
   LEAD_STORAGE_KEY,
   normalizeEmail,
+  normalizePhone,
   type LeadDraft,
 } from "@/lib/lead";
 
@@ -72,7 +74,9 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
   function startQuiz(event: FormEvent) {
     event.preventDefault();
     const nameOk = isValidName(name);
-    const phoneOk = isValidPhone(phone);
+    const phoneFormatted = formatPhoneInput(phone);
+    if (phoneFormatted !== phone) setPhone(phoneFormatted);
+    const phoneOk = isValidPhone(phoneFormatted);
     const emailOk = isValidEmail(email);
     setNameError(!nameOk);
     setPhoneError(!phoneOk);
@@ -118,7 +122,7 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
     go(RESULT_STEP);
     const lead: LeadDraft = {
       name: cleanName(name),
-      phone: phone.trim(),
+      phone: normalizePhone(phone) ?? formatPhoneInput(phone),
       email: normalizeEmail(email) ?? undefined,
     };
     publishLead(lead);
@@ -218,14 +222,23 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
                     id="quiz-phone"
                     ref={phoneRef}
                     type="tel"
-                    inputMode="tel"
+                    inputMode="numeric"
                     autoComplete="tel-national"
                     placeholder="98765 43210"
+                    maxLength={10}
                     value={phone}
                     aria-invalid={phoneError}
                     onChange={(e) => {
-                      setPhone(e.target.value);
+                      setPhone(formatPhoneInput(e.target.value));
                       setPhoneError(false);
+                    }}
+                    onInput={(e) => {
+                      setPhone(formatPhoneInput(e.currentTarget.value));
+                      setPhoneError(false);
+                    }}
+                    onBlur={(e) => {
+                      const next = formatPhoneInput(e.target.value);
+                      if (next !== phone) setPhone(next);
                     }}
                   />
                 </div>

@@ -60,11 +60,18 @@ export function isValidName(value: string) {
   return name.length >= 2 && name.length <= 80 && /\p{L}/u.test(name);
 }
 
+// Strips +91 / leading 0 and caps at 10 digits — use while the person types or on autofill.
+export function formatPhoneInput(value: string) {
+  let digits = digitsOnly(value);
+  if (digits.length >= 12 && digits.startsWith("91")) digits = digits.slice(2);
+  else if (digits.length === 11 && digits.startsWith("0")) digits = digits.slice(1);
+  digits = digits.replace(/^0+/, "");
+  return digits.slice(0, 10);
+}
+
 // An Indian mobile number as 10 digits, accepting +91, 91 or a leading 0. Null if it isn't one.
 export function normalizePhone(value: string) {
-  let digits = digitsOnly(value);
-  if (digits.length === 12 && digits.startsWith("91")) digits = digits.slice(2);
-  else if (digits.length === 11 && digits.startsWith("0")) digits = digits.slice(1);
+  const digits = formatPhoneInput(value);
   return /^[6-9]\d{9}$/.test(digits) ? digits : null;
 }
 

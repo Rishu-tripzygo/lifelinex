@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Icon } from "@/components/icons";
+import { formatPhoneInput } from "@/lib/lead";
 import { SlotPicker } from "@/components/slot-picker";
 
 export function RescheduleToggle({ orderId, current }: { orderId: string; current: string }) {
@@ -59,13 +60,22 @@ export function VerifyPhone({ orderId }: { orderId: string }) {
           <input
             id="verify-phone"
             type="tel"
-            inputMode="tel"
+            inputMode="numeric"
             autoComplete="tel-national"
             placeholder="98765 43210"
+            maxLength={10}
             value={phone}
             onChange={(e) => {
-              setPhone(e.target.value);
+              setPhone(formatPhoneInput(e.target.value));
               setError("");
+            }}
+            onInput={(e) => {
+              setPhone(formatPhoneInput(e.currentTarget.value));
+              setError("");
+            }}
+            onBlur={(e) => {
+              const next = formatPhoneInput(e.target.value);
+              if (next !== phone) setPhone(next);
             }}
           />
         </div>
