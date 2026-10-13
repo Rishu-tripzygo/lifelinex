@@ -10,16 +10,6 @@ type ConsultationMail = {
   orderId: string;
 };
 
-type AssessmentMail = {
-  to: string;
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-  submittedAt: Date;
-  answers: { question: string; answer: string }[];
-};
-
 function mailTransport() {
   const host = process.env.SMTP_HOST?.trim();
   const user = process.env.SMTP_USER?.trim();
@@ -103,72 +93,4 @@ export async function sendConsultationEmail(input: ConsultationMail) {
     console.error("[email] send failed", error);
     return false;
   }
-}
-
-export async function sendAssessmentNotificationEmail(input: AssessmentMail) {
-  const mail = mailTransport();
-  if (!mail) {
-    console.warn("[assessment-email] SMTP not configured — skipping notification");
-    return false;
-  }
-
-  const submitted = new Intl.DateTimeFormat("en-IN", {
-    timeZone: "Asia/Kolkata",
-    dateStyle: "full",
-    timeStyle: "short",
-  }).format(input.submittedAt);
-  const subject = `New PCOS assessment — ${input.name}`;
-  const answerText = input.answers.map((row) => `${row.question}: ${row.answer}`).join("\n");
-  const answerHtml = input.answers
-    .map(
-      (row) =>
-        `<tr><td style="padding:8px;border:1px solid #d9e7ec;font-weight:600;vertical-align:top">${escapeHtml(row.question)}</td><td style="padding:8px;border:1px solid #d9e7ec;vertical-align:top">${escapeHtml(row.answer)}</td></tr>`,
-    )
-    .join("");
-
-  try {
-    await mail.transport.sendMail({
-      from: `LifelineX <${mail.from}>`,
-      to: input.to,
-      subject,
-      text: [
-        "A new PCOS / PCOD / PMOS assessment has been submitted.",
-        "",
-        `Name: ${input.name}`,
-        `Phone: +91 ${input.phone}`,
-        `Email: ${input.email}`,
-        `Submitted: ${submitted}`,
-        `Assessment ID: ${input.id}`,
-        "",
-        answerText,
-      ].join("\n"),
-      html: `
-        <h2 style="color:#063b5c">New PCOS assessment</h2>
-        <p><strong>Name:</strong> ${escapeHtml(input.name)}<br/>
-        <strong>Phone:</strong> +91 ${escapeHtml(input.phone)}<br/>
-        <strong>Email:</strong> ${escapeHtml(input.email)}<br/>
-        <strong>Submitted:</strong> ${escapeHtml(submitted)}<br/>
-        <strong>Assessment ID:</strong> ${escapeHtml(input.id)}</p>
-        <table style="border-collapse:collapse;width:100%;max-width:760px">${answerHtml}</table>
-        <p style="color:#667085;font-size:12px">This email contains confidential health information. Keep it within the authorised LifelineX clinical team.</p>
-      `,
-    });
-    return true;
-  } catch (error) {
-    console.error("[assessment-email] send failed", error);
-    return false;
-  }
-}
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (character) => {
-    const entities: Record<string, string> = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-    return entities[character];
-  });
 }
