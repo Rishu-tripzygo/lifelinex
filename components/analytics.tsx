@@ -2,26 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-
-declare global {
-  interface Window {
-    dataLayer?: unknown[];
-  }
-}
+import { trackEvent } from "@/lib/client-analytics";
 
 function pageType(pathname: string) {
   if (pathname === "/") return "home";
   if (pathname.startsWith("/booking/")) return "booking";
   if (pathname.startsWith("/payment/")) return "payment";
   return "condition";
-}
-
-function sendEvent(name: string, parameters: Record<string, string>) {
-  window.dataLayer ??= [];
-  function gtag(..._args: unknown[]) {
-    window.dataLayer?.push(arguments);
-  }
-  gtag("event", name, parameters);
 }
 
 function classifyCta(element: HTMLElement) {
@@ -47,7 +34,8 @@ export function Analytics() {
     if (pathname.startsWith("/admin")) return;
 
     if (previousPath.current && previousPath.current !== pathname) {
-      sendEvent("page_view", { page_type: pageType(pathname) });
+      window.dataLayer ??= [];
+      window.dataLayer.push({ event: "virtual_page_view", page_type: pageType(pathname) });
     }
     previousPath.current = pathname;
   }, [pathname]);
@@ -58,7 +46,7 @@ export function Analytics() {
     const handleClick = (event: MouseEvent) => {
       const target = event.target instanceof Element ? event.target.closest<HTMLElement>("a, button") : null;
       if (!target || target.closest("[data-analytics-ignore]")) return;
-      sendEvent("cta_click", {
+      trackEvent("cta_click", {
         cta_type: classifyCta(target),
         page_type: pageType(window.location.pathname),
       });

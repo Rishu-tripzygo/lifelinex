@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
+import { trackEvent } from "@/lib/client-analytics";
 import {
   formatInr,
   formatPhoneInput,
@@ -120,6 +121,7 @@ export function BookingCard({ fee, inline = false }: { fee: number; inline?: boo
       if (!response.ok || !data.paymentSessionId) {
         throw new Error(data.error || "Payment could not be started.");
       }
+      trackEvent("checkout_start", { currency: "INR", value: fee, condition: "pcos" });
       const cashfree = await loadCashfree(data.mode === "production" ? "production" : "sandbox");
       await cashfree.checkout({
         paymentSessionId: data.paymentSessionId,

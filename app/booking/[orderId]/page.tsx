@@ -5,6 +5,7 @@ import { RescheduleToggle, VerifyPhone } from "@/components/booking-manage";
 import { Icon } from "@/components/icons";
 import { RememberPaidOrder } from "@/components/remember-paid-order";
 import { SlotPicker } from "@/components/slot-picker";
+import { ConversionTracker } from "@/components/conversion-tracker";
 import { hasOrderAccess } from "@/lib/access";
 import { formatInr } from "@/lib/lead";
 import { ORDER_ID_PATTERN } from "@/lib/payments";
@@ -75,6 +76,11 @@ export default async function BookingPage({ params }: { params: Promise<{ orderI
     return (
       <Shell>
         <RememberPaidOrder orderId={orderId} />
+        <ConversionTracker
+          event="payment_success"
+          dedupeKey={order.id}
+          parameters={{ currency: "INR", value: order.amount, condition: "pcos" }}
+        />
         <Steps booked={false} />
         <h1>Pick your consultation time</h1>
         <p className="small" style={{ fontSize: 15.5 }}>
@@ -100,6 +106,16 @@ export default async function BookingPage({ params }: { params: Promise<{ orderI
   return (
     <Shell>
       <RememberPaidOrder orderId={orderId} />
+      <ConversionTracker
+        event="payment_success"
+        dedupeKey={order.id}
+        parameters={{ currency: "INR", value: order.amount, condition: "pcos" }}
+      />
+      <ConversionTracker
+        event="booking_complete"
+        dedupeKey={booking.id}
+        parameters={{ condition: "pcos", page_type: "booking" }}
+      />
       <Steps booked />
       <span className={`status__mark ${confirmed ? "status__mark--ok" : "status__mark--wait"}`}>
         <Icon name={confirmed ? "check" : "alert"} size={24} />

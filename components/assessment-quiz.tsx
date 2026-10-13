@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { BookingCard } from "@/components/booking-card";
 import { Icon } from "@/components/icons";
 import { labelFor, QUESTIONS, SYMPTOMS } from "@/lib/assessment-questions";
+import { trackEvent } from "@/lib/client-analytics";
 import {
   cleanName,
   formatPhoneInput,
@@ -141,7 +142,10 @@ export function AssessmentQuiz({ fee }: { fee: number }) {
         }),
       });
       const data = (await response.json()) as { id?: string };
-      if (response.ok && data.id) publishLead({ ...lead, assessmentId: data.id });
+      if (response.ok && data.id) {
+        publishLead({ ...lead, assessmentId: data.id });
+        trackEvent("assessment_submit", { condition: "pcos", page_type: "condition" });
+      }
     } catch {
       // Booking can still continue with the name and phone saved in this browser.
     }

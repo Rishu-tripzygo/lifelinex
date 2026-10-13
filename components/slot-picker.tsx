@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
+import { trackEvent } from "@/lib/client-analytics";
 import { formatDay, formatLongDay, formatTime } from "@/lib/time";
 
 // "Fri, 9 Oct" -> ["Fri", "9 Oct"]
@@ -70,6 +71,7 @@ export function SlotPicker({ orderId, current, onDone }: { orderId: string; curr
         await load();
         return;
       }
+      trackEvent("booking_complete", { condition: "pcos", page_type: "booking" });
       onDone?.();
       router.refresh();
     } catch {
