@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@/components/analytics";
 import { JsonLd } from "@/components/json-ld";
 import "./globals.css";
 
@@ -6,6 +7,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  verification: { google: "1AlDTWIY-7RX7XgStKuTCtrS8l28gwqyaUOtdI2Rvfk" },
   title: {
     default: "LifelineX — Doctor-Led Online Health Consultations",
     template: "%s — LifelineX",
@@ -49,6 +51,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="no-js" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.remove('no-js')" }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if(!location.pathname.startsWith('/admin')){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.id='lifelinex-gtm';j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WRLBSPL6');}",
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -57,7 +65,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <JsonLd data={ORGANISATION} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

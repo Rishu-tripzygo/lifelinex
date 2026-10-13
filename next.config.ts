@@ -8,11 +8,11 @@ const isDev = process.env.NODE_ENV !== "production";
 // 'unsafe-eval' only in development for React Refresh.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://sdk.cashfree.com${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://sdk.cashfree.com https://www.googletagmanager.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
-  `connect-src 'self' https://*.cashfree.com${isDev ? " ws: http://localhost:*" : ""}`,
+  `connect-src 'self' https://*.cashfree.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com${isDev ? " ws: http://localhost:*" : ""}`,
   "frame-src https://*.cashfree.com",
   "form-action 'self' https://*.cashfree.com",
   "frame-ancestors 'none'",
